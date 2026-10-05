@@ -9,18 +9,19 @@
 
 $fn = 40;
 
-// Dimensions (mm)
-cabin_w       = 48.0;  // Width (across track)
-cabin_l       = 64.0;  // Length (along track)
-cabin_h       = 50.0;  // Body height
-wall_th       = 2.4;   // Wall thickness
-corner_r      = 6.0;   // Rounded corner radius
+// Dimensions (mm) - Scaled to 1/3 size (reduced size by 2/3rd)
+cabin_w       = 16.0;  // Width (across track) [scaled from 48mm]
+cabin_l       = 21.33; // Length (along track) [scaled from 64mm]
+cabin_h       = 16.67; // Body height [scaled from 50mm]
+wall_th       = 1.2;   // Wall thickness [scaled from 2.4mm]
+corner_r      = 2.0;   // Rounded corner radius [scaled from 6mm]
 
-// Hanger Dimensions
-hanger_height = 65.0;  // Vertical clearance from roof to trolley
-hanger_offset = 26.0;  // Side offset to clear the cable line
-hanger_th     = 4.5;   // Arm thickness
-pivot_pin_d   = 3.4;   // Hole matching trolley lower pivot (M3 screw)
+// Hanger Dimensions - Scaled envelope, functional hardware preserved
+hanger_height = 21.67; // Vertical clearance from roof to trolley [scaled from 65mm]
+hanger_offset = 8.67;  // Side offset to clear the cable line [scaled from 26mm]
+hanger_th     = 3.2;   // Arm thickness [adjusted for printable stability]
+pivot_pin_d   = 3.4;   // Hole matching trolley lower pivot (M3 screw standard fit)
+
 
 // Helper: Rounded Box
 module rounded_box(l, w, h, r) {
@@ -36,39 +37,69 @@ module rounded_box(l, w, h, r) {
 
 // 1. Cabin Body (Sits flat on build plate at Z=0, zero supports needed)
 module cabin_body() {
+    door_w = cabin_l * 0.45;
+    door_h = cabin_h * 0.75;
+    
     difference() {
-        // Outer shell
-        rounded_box(cabin_l, cabin_w, cabin_h, corner_r);
+        union() {
+            // Outer shell
+            rounded_box(cabin_l, cabin_w, cabin_h, corner_r);
+            
+            // Outer door frame molding / trim on sides (+Y and -Y)
+            for (y_sign = [-1, 1]) {
+                translate([0, y_sign * (cabin_w / 2 + 0.1), door_h / 2])
+                    cube([door_w + 0.8, 0.4, door_h + 0.8], center = true);
+            }
+        }
         
         // Hollow interior
         translate([0, 0, wall_th])
             rounded_box(cabin_l - wall_th*2, cabin_w - wall_th*2, cabin_h + 2, max(1, corner_r - wall_th));
         
-        // Side Windows with 45-degree arched lintels (overhang angle printable without supports)
+        // Door panel recessed outlines and seams on both sides (+Y and -Y)
+        for (y_sign = [-1, 1]) {
+            // Door outline
+            translate([0, y_sign * (cabin_w / 2), door_h / 2])
+                cube([door_w, 0.6, door_h], center = true);
+
+            // Vertical center line for double-door seam
+            translate([0, y_sign * (cabin_w / 2), door_h / 2])
+                cube([0.3, 0.8, door_h - 0.4], center = true);
+                
+            // Door handles
+            translate([1.2, y_sign * (cabin_w / 2 + 0.1), door_h * 0.45])
+                rotate([90, 0, 0])
+                    cylinder(d = 1.0, h = 0.8, center = true);
+            translate([-1.2, y_sign * (cabin_w / 2 + 0.1), door_h * 0.45])
+                rotate([90, 0, 0])
+                    cylinder(d = 1.0, h = 0.8, center = true);
+        }
+
+        // Side Windows (including double door windows) with 45° self-supporting arches
         for (y = [-cabin_w/2 - 2, cabin_w/2 + 2]) {
-            for (x = [-cabin_l/4, cabin_l/4]) {
-                translate([x, y, cabin_h * 0.38])
+            for (x = [-cabin_l/5, cabin_l/5]) {
+                translate([x, y, cabin_h * 0.52])
                     rotate([90, 0, 0])
                         hull() {
-                            // Lower rectangular window portion
-                            rounded_box(cabin_l * 0.32, cabin_h * 0.35, wall_th * 3, 2);
-                            // 45-degree pointed top arch for clean bridging
-                            translate([0, cabin_h * 0.22, 0])
+                            // Lower rectangular window portion inside door/side frame
+                            rounded_box(cabin_l * 0.28, cabin_h * 0.28, wall_th * 3, 1.2);
+                            // 45-degree pointed top arch for clean 3D bridging without supports
+                            translate([0, cabin_h * 0.18, 0])
                                 rotate([0, 0, 45])
-                                    cube([cabin_l * 0.22, cabin_l * 0.22, wall_th * 3], center = true);
+                                    cube([cabin_l * 0.18, cabin_l * 0.18, wall_th * 3], center = true);
                         }
             }
         }
         
         // Front & Rear Windows
         for (x = [-cabin_l/2 - 2, cabin_l/2 + 2]) {
-            translate([x, 0, cabin_h * 0.42])
+            translate([x, 0, cabin_h * 0.52])
                 rotate([0, 90, 0])
                     hull() {
-                        rounded_box(cabin_h * 0.35, cabin_w * 0.52, wall_th * 3, 2);
-                        translate([0, cabin_w * 0.2, 0])
+                        rounded_box(cabin_h * 0.28, cabin_w * 0.48, wall_th * 3, 1.2);
+                        translate([0, cabin_w * 0.15, 0])
                             rotate([0, 0, 45])
-                                cube([cabin_w * 0.25, cabin_w * 0.25, wall_th * 3], center = true);
+                                cube([cabin_w * 0.2, cabin_w * 0.2, wall_th * 3], center = true);
                     }
         }
         
@@ -83,6 +114,8 @@ module cabin_body() {
             }
     }
 }
+
+
 
 // 2. Cabin Alpine Roof (100% Flat on Bed at Z=0, ZERO negative Z geometry)
 module cabin_roof() {

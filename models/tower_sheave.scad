@@ -8,14 +8,15 @@
 
 $fn = 60;
 
-// Dimensions (mm)
-sheave_outer_dia = 54.0; // Outer flange diameter
-sheave_pitch_dia = 44.0; // Cable track diameter
-sheave_width     = 8.0;  // Total sheave rim width
-hub_h            = 12.0; // Extended center hub for shaft grip and standoff
+// Dimensions (mm) - Scaled to 1/3 size (reduced size by 2/3rd)
+sheave_outer_dia = 18.0; // Outer flange diameter [scaled from 54mm]
+sheave_pitch_dia = 14.67;// Cable track diameter [scaled from 44mm]
+sheave_width     = 4.0;  // Total sheave rim width [scaled from 8mm]
+hub_h            = 6.0;  // Extended center hub [scaled from 12mm]
 bore_dia         = 5.2;  // 5mm motor shaft / M5 screw clearance
 grub_screw_dia   = 3.0;  // M3 set/grub screw for Phase 2 motor lock
-hub_lift         = (hub_h - sheave_width) / 2; // 2.0mm standoff from bed
+hub_lift         = (hub_h - sheave_width) / 2; // 1.0mm standoff from bed
+
 
 module tower_sheave() {
     difference() {

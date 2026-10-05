@@ -10,11 +10,12 @@
 
 $fn = 40;
 
-base_dia       = 110.0; // Wide footprint for stability against cable tension
-base_th        = 8.0;   // Solid base thickness
-socket_inner_d = 20.4;  // Fits 20mm dowel or lattice mast plug
-socket_wall    = 4.5;
-socket_h       = 32.0;
+base_dia       = 36.67; // Wide footprint [scaled from 110mm]
+base_th        = 3.0;   // Base thickness [scaled from 8mm]
+socket_inner_d = 6.8;   // Fits scaled 6.8mm mast plug [scaled from 20.4mm]
+socket_wall    = 2.0;   // Wall thickness
+socket_h       = 11.0;  // Socket column height [scaled from 32mm]
+
 
 // 1. Sturdy Baseplate
 module tower_base() {
@@ -56,35 +57,36 @@ module tower_base() {
 }
 
 // 2. Optional 3D-Printable Lattice Mast Segment (Stackable)
-module tower_mast_segment(height = 100) {
+module tower_mast_segment(height = 40) {
     difference() {
         union() {
             // Main lattice column
-            cylinder(d = 20.0, h = height);
+            cylinder(d = 6.6, h = height);
             
             // Lower plug that fits into tower_base socket
-            translate([0, 0, -24])
-                cylinder(d = 20.0, h = 24);
+            translate([0, 0, -8])
+                cylinder(d = 6.6, h = 8);
         }
         
         // Upper receiving socket for stacking another segment or tower head
-        translate([0, 0, height - 24])
-            cylinder(d = socket_inner_d, h = 26);
+        translate([0, 0, height - 8])
+            cylinder(d = socket_inner_d, h = 9);
             
-        // Hollow interior for lightness / wiring (pass motor wires internally in Phase 2!)
-        cylinder(d = 12.0, h = height + 10, center = true);
+        // Hollow interior for lightness / wiring
+        cylinder(d = 3.6, h = height + 10, center = true);
         
         // Decorative / lightweight lattice cutouts
-        for (z = [15 : 20 : height - 20]) {
+        for (z = [6 : 8 : height - 6]) {
             translate([0, 0, z])
                 rotate([90, 0, 0])
-                    cylinder(d = 10, h = 24, center = true);
-            translate([0, 0, z + 10])
+                    cylinder(d = 3.5, h = 10, center = true);
+            translate([0, 0, z + 4])
                 rotate([0, 90, 0])
-                    cylinder(d = 10, h = 24, center = true);
+                    cylinder(d = 3.5, h = 10, center = true);
         }
     }
 }
+
 
 // ====================================================================
 // Selection

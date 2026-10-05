@@ -12,16 +12,17 @@ use <tower_sheave.scad>;
 
 $fn = 40;
 
-// Dimensions
-bracket_w        = 46.0; // Width of mounting face
-bracket_h        = 52.0; // Height of mounting plate
-plate_th         = 6.0;  // Thickness of plate
-nema17_hole_dist = 31.0; // NEMA 17 standard mounting hole spacing
-nema17_pilot_d   = 23.0; // NEMA 17 center collar clearance
-m3_hole_d        = 3.4;  // M3 bolt clearance
-socket_inner_d   = 20.4; // Fits 20mm (or 3/4 inch) dowel/pipe
-socket_wall      = 4.0;
-socket_depth     = 25.0;
+// Dimensions - Scaled to 1/3 envelope size (reduced size by 2/3rd)
+bracket_w        = 15.33; // Width of mounting face [scaled from 46mm]
+bracket_h        = 17.33; // Height of mounting plate [scaled from 52mm]
+plate_th         = 3.0;   // Thickness of plate [scaled from 6mm]
+nema17_hole_dist = 31.0;  // Standard NEMA 17 mounting hole spacing preserved
+nema17_pilot_d   = 23.0;  // Standard NEMA 17 center collar clearance preserved
+m3_hole_d        = 3.4;   // M3 bolt clearance
+socket_inner_d   = 6.8;   // Fits scaled mast/dowel [scaled from 20.4mm]
+socket_wall      = 2.0;   // Socket wall thickness
+socket_depth     = 10.0;  // Socket depth [scaled from 25mm]
+
 
 module tower_head_a() {
     difference() {

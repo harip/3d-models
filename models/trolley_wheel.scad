@@ -6,14 +6,15 @@
 
 $fn = 60; // Smooth curve resolution
 
-// Parameters
-wheel_outer_dia   = 22.0; // Outer flange diameter (mm)
-groove_root_dia   = 16.0; // Bottom of groove diameter (mm)
-wheel_thickness   = 6.0;  // Total thickness along axle (mm)
-groove_width      = 3.0;  // Width of cable track (mm)
+// Parameters - Scaled to 1/3 size (reduced size by 2/3rd)
+wheel_outer_dia   = 7.33; // Outer flange diameter (mm) [scaled from 22mm]
+groove_root_dia   = 5.33; // Bottom of groove diameter (mm) [scaled from 16mm]
+wheel_thickness   = 2.5;  // Total thickness along axle (mm) [scaled from 6mm]
+groove_width      = 1.5;  // Width of cable track (mm)
 axle_hole_dia     = 3.4;  // Fits standard M3 screw with clearance
-hub_lip_extension = 0.6;  // Built-in standoff hub so wheel faces don't rub on carriage walls
-hub_dia           = 7.0;  // Diameter of built-in standoff spacer
+hub_lip_extension = 0.4;  // Built-in standoff hub so wheel faces don't rub
+hub_dia           = 5.0;  // Diameter of built-in standoff spacer
+
 
 total_wheel_h = wheel_thickness + (hub_lip_extension * 2);
 

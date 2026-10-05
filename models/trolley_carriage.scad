@@ -11,15 +11,16 @@ use <trolley_wheel.scad>;
 
 $fn = 40;
 
-wheel_spacing       = 38.0; // Distance between front and rear wheel centers (mm)
-carriage_length     = 58.0;
-carriage_height     = 22.0;
-wheel_slot_width    = 7.8;  // Fits 6mm thick wheel + hub clearance
-wall_thickness      = 3.4;  // Wall thickness on each side
+wheel_spacing       = 12.67; // Distance between front and rear wheel centers [scaled from 38mm]
+carriage_length     = 19.33; // Overall chassis length [scaled from 58mm]
+carriage_height     = 7.33;  // Chassis height [scaled from 22mm]
+wheel_slot_width    = 3.8;   // Fits scaled wheel + hub clearance
+wall_thickness      = 1.5;   // Printable wall thickness on each side
 total_width         = wheel_slot_width + (wall_thickness * 2);
-axle_dia            = 3.4;  // Clearance for M3 screw
-hanger_pivot_dia    = 3.4;  // Cross-pin hole for gondola hanger arm
-clevis_ear_h        = 10.0;
+axle_dia            = 3.4;   // Clearance for standard M3 screw
+hanger_pivot_dia    = 3.4;   // Cross-pin hole for gondola hanger arm (standard M3)
+clevis_ear_h        = 4.5;   // Clevis ear height [scaled from 10mm]
+
 
 // The carriage modeled natively in its print orientation (Flat on top at Z = 0)
 module trolley_carriage_print() {

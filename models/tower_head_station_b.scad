@@ -12,14 +12,15 @@ use <tower_sheave.scad>;
 
 $fn = 40;
 
-body_w         = 46.0;
-body_l         = 65.0; // Extended length for horizontal adjustment travel
-body_h         = 24.0;
-slot_travel    = 28.0;
-axle_dia       = 5.4;  // M5 bolt clearance for sheave axle
-socket_inner_d = 20.4;
-socket_wall    = 4.0;
-socket_depth   = 25.0;
+body_w         = 15.33; // [scaled from 46mm]
+body_l         = 21.67; // [scaled from 65mm]
+body_h         = 8.0;   // [scaled from 24mm]
+slot_travel    = 9.33;  // [scaled from 28mm]
+axle_dia       = 5.4;   // M5 bolt clearance for sheave axle
+socket_inner_d = 6.8;   // Fits scaled mast/dowel [scaled from 20.4mm]
+socket_wall    = 2.0;
+socket_depth   = 10.0;  // [scaled from 25mm]
+
 
 module tower_head_b() {
     difference() {
