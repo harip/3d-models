@@ -10,15 +10,14 @@ Each file prints a **single object** (or matched pair) centered right in the mid
 
 | Step | File | What It Prints | Recommended Color | Slicer Infill | Est. Print Time |
 | :---: | :--- | :--- | :--- | :---: | :---: |
-| **01** | [`01_gondola_cabin.scad`](file:///Volumes/Samsung%20990%201TB/Hari/gandola/models/01_gondola_cabin.scad) | Alpine Cabin Body | Festive Red / Alpine Green | 15–20% | ~35–45 min |
-| **02** | [`02_cabin_roof.scad`](file:///Volumes/Samsung%20990%201TB/Hari/gandola/models/02_cabin_roof.scad) | Cabin Roof with Clevis | White / Snow / Dark Red | 15–20% | ~20–30 min |
-| **03** | [`03_hanger_arm.scad`](file:///Volumes/Samsung%20990%201TB/Hari/gandola/models/03_hanger_arm.scad) | Flat C-Hanger Arm | Silver / Black / White | 100% | ~12–18 min |
-| **04** | [`04_trolley_carriage.scad`](file:///Volumes/Samsung%20990%201TB/Hari/gandola/models/04_trolley_carriage.scad) | Inverted U-Chassis | Black / Dark Gray | 30% | ~20–25 min |
-| **05** | [`05_trolley_wheels_pair.scad`](file:///Volumes/Samsung%20990%201TB/Hari/gandola/models/05_trolley_wheels_pair.scad) | Pair of Grooved Rollers | Gold / Yellow / Bronze | 100% | ~15–20 min |
-| **06** | [`06_tower_head_station_a.scad`](file:///Volumes/Samsung%20990%201TB/Hari/gandola/models/06_tower_head_station_a.scad) | Drive Tower Head A | Forest Green / Black | 30% | ~30–40 min |
-| **07** | [`07_tower_head_station_b.scad`](file:///Volumes/Samsung%20990%201TB/Hari/gandola/models/07_tower_head_station_b.scad) | Tension Tower Head B | Forest Green / Black | 30% | ~30–40 min |
-| **08** | [`08_tower_sheaves_pair.scad`](file:///Volumes/Samsung%20990%201TB/Hari/gandola/models/08_tower_sheaves_pair.scad) | Pair of 54mm Sheaves | Gold / Silver | 30% | ~30–40 min |
-| **09** | [`09_tower_base.scad`](file:///Volumes/Samsung%20990%201TB/Hari/gandola/models/09_tower_base.scad) | 110mm Baseplate *(Print 2x)* | Dark Slate / White | 20% | ~35–45 min each |
+| **01** | [`01_gondola_single_piece.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/01_gondola_single_piece.scad) | Unified Gondola Cabin & Roof (1-Piece) | Festive Red / Alpine Green | 15–20% | ~25–35 min |
+| **03** | [`03_hanger_arm.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/03_hanger_arm.scad) | Flat C-Hanger Arm | Silver / Black / White | 100% | ~12–18 min |
+| **04** | [`04_trolley_carriage.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/04_trolley_carriage.scad) | Inverted U-Chassis | Black / Dark Gray | 30% | ~20–25 min |
+| **05** | [`05_trolley_wheels_pair.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/05_trolley_wheels_pair.scad) | Pair of Grooved Rollers | Gold / Yellow / Bronze | 100% | ~15–20 min |
+| **06** | [`06_tower_head_station_a.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/06_tower_head_station_a.scad) | Drive Tower Head A | Forest Green / Black | 30% | ~30–40 min |
+| **07** | [`07_tower_head_station_b.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/07_tower_head_station_b.scad) | Tension Tower Head B | Forest Green / Black | 30% | ~30–40 min |
+| **08** | [`08_tower_sheaves_pair.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/08_tower_sheaves_pair.scad) | Pair of 18mm Sheaves | Gold / Silver | 30% | ~30–40 min |
+| **09** | [`09_tower_base.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/09_tower_base.scad) | 36mm Baseplate *(Print 2x)* | Dark Slate / White | 20% | ~20–30 min each |
 
 ---
 
@@ -26,8 +25,8 @@ Each file prints a **single object** (or matched pair) centered right in the mid
 
 ### 1. Vehicle Assembly (Steps 01 – 05)
 1. **Trolley Rollers:** Drop two M3 locknuts into the captive hex pockets of the **Trolley Carriage** (`04`). Place the **2 Wheels** (`05`) into the channel and insert M3 $\times$ 16mm screws. Tighten until snug; check that wheels spin freely.
-2. **Cabin Body & Roof:** Snap the **Roof** (`02`) onto the **Cabin Body** (`01`). The front alignment key ensures it only snaps on in the forward orientation.
-3. **Attach Hanger Arm:** Drop an M3 nut into the captive pocket on the roof clevis. Slide the lower tab of the **C-Hanger Arm** (`03`) into the slot and push an M3 $\times$ 16mm screw through.
+2. **Attach Hanger Arm:** Slide the lower tab of the **C-Hanger Arm** (`03`) into the top roof bracket slot of the **Unified Gondola Cabin** (`01`) and secure with an M3 $\times$ 16mm screw.
+
 4. **Hang on Carriage:** Drop an M3 nut into the lower clevis of the **Trolley Carriage** (`04`). Slide the top eyelet of the **Hanger Arm** (`03`) into the fork and secure with an M3 $\times$ 16mm screw.
 
 ### 2. Towers & Rigging (Steps 06 – 09)
