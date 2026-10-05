@@ -9,9 +9,10 @@ use <trolley_wheel.scad>;
 
 $fn = 60;
 
-// 2 wheels spaced 30mm apart, centered on bed at Z = 0
-translate([-18, 0, 0])
+// 2 wheels spaced closely (10mm center-to-center), centered on bed at Z = 0
+translate([-5.0, 0, 0])
     trolley_wheel();
 
-translate([18, 0, 0])
+translate([5.0, 0, 0])
     trolley_wheel();
+

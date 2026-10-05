@@ -14,10 +14,14 @@ Each file prints a **single object** (or matched pair) centered right in the mid
 | **03** | [`03_hanger_arm.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/03_hanger_arm.scad) | Flat C-Hanger Arm | Silver / Black / White | 100% | ~12–18 min |
 | **04** | [`04_trolley_carriage.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/04_trolley_carriage.scad) | Inverted U-Chassis | Black / Dark Gray | 30% | ~20–25 min |
 | **05** | [`05_trolley_wheels_pair.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/05_trolley_wheels_pair.scad) | Pair of Grooved Rollers | Gold / Yellow / Bronze | 100% | ~15–20 min |
-| **06** | [`06_tower_head_station_a.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/06_tower_head_station_a.scad) | Drive Tower Head A | Forest Green / Black | 30% | ~30–40 min |
-| **07** | [`07_tower_head_station_b.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/07_tower_head_station_b.scad) | Tension Tower Head B | Forest Green / Black | 30% | ~30–40 min |
+| **06A** | [`06a_tower_a_socket.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/06a_tower_a_socket.scad) | Tower A Mast Socket | Forest Green / Black | 30% | ~12–15 min |
+| **06B** | [`06b_tower_a_bracket.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/06b_tower_a_bracket.scad) | Tower A Head Bracket | Forest Green / Black | 30% | ~15–20 min |
+| **07A** | [`07a_tower_b_socket.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/07a_tower_b_socket.scad) | Tower B Mast Socket | Forest Green / Black | 30% | ~12–15 min |
+| **07B** | [`07b_tower_b_bracket.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/07b_tower_b_bracket.scad) | Tower B Tensioner Bracket | Forest Green / Black | 30% | ~15–20 min |
 | **08** | [`08_tower_sheaves_pair.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/08_tower_sheaves_pair.scad) | Pair of 18mm Sheaves | Gold / Silver | 30% | ~30–40 min |
 | **09** | [`09_tower_base.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/09_tower_base.scad) | 36mm Baseplate *(Print 2x)* | Dark Slate / White | 20% | ~20–30 min each |
+
+
 
 ---
 
