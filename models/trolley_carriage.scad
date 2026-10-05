@@ -11,15 +11,15 @@ use <trolley_wheel.scad>;
 
 $fn = 40;
 
-wheel_spacing       = 12.67; // Distance between front and rear wheel centers [scaled from 38mm]
-carriage_length     = 19.33; // Overall chassis length [scaled from 58mm]
-carriage_height     = 7.33;  // Chassis height [scaled from 22mm]
-wheel_slot_width    = 3.8;   // Fits scaled wheel + hub clearance
-wall_thickness      = 1.5;   // Printable wall thickness on each side
-total_width         = wheel_slot_width + (wall_thickness * 2);
-axle_dia            = 3.4;   // Clearance for standard M3 screw
-hanger_pivot_dia    = 3.4;   // Cross-pin hole for gondola hanger arm (standard M3)
-clevis_ear_h        = 4.5;   // Clevis ear height [scaled from 10mm]
+wheel_spacing       = 14.0;  // Distance between front and rear wheel centers
+carriage_length     = 24.0;  // Overall chassis length
+carriage_height     = 9.5;   // Chassis height to house 12mm wheels
+wheel_slot_width    = 4.6;   // Fits 4.0mm wheel total width with clearance
+wall_thickness      = 1.6;   // Wall thickness on each side
+total_width         = wheel_slot_width + (wall_thickness * 2); // 7.8mm total
+axle_dia            = 3.4;   // Clearance for 3.2mm axle pin
+hanger_pivot_dia    = 3.4;   // Cross-pin hole for gondola hanger arm
+clevis_ear_h        = 4.5;   // Clevis ear height
 
 
 // Integrated 1-Piece Robust Trolley Carriage (100% Support Free)
@@ -43,7 +43,7 @@ module trolley_carriage_print() {
 
         // Side axle pin holes for the 2 wheels (3.4mm diameter)
         for (x = [-wheel_spacing / 2, wheel_spacing / 2]) {
-            translate([x, 0, carriage_height - 3.5])
+            translate([x, 0, carriage_height - 4.5])
                 rotate([90, 0, 0])
                     cylinder(d = axle_dia, h = total_width + 2, center = true);
         }
@@ -54,10 +54,10 @@ module trolley_carriage_print() {
                 cylinder(d = hanger_pivot_dia, h = total_width + 4, center = true);
 
         // Phase 2 Pre-Engineered Haul-Line Clamp / Tie-Off slots
-        translate([5, 0, 4])
+        translate([6, 0, 4])
             rotate([0, 90, 0])
                 cylinder(d = 2.0, h = 4, center = true);
-        translate([-5, 0, 4])
+        translate([-6, 0, 4])
             rotate([0, 90, 0])
                 cylinder(d = 2.0, h = 4, center = true);
     }
