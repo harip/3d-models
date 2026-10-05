@@ -22,7 +22,7 @@ hanger_pivot_dia    = 3.4;   // Cross-pin hole for gondola hanger arm (standard 
 clevis_ear_h        = 4.5;   // Clevis ear height [scaled from 10mm]
 
 
-// The carriage modeled natively in its print orientation (Flat on top at Z = 0)
+// Integrated 1-Piece Robust Trolley Carriage (100% Support Free)
 module trolley_carriage_print() {
     difference() {
         union() {
@@ -30,57 +30,39 @@ module trolley_carriage_print() {
             translate([0, 0, carriage_height / 2])
                 cube([carriage_length, total_width, carriage_height], center = true);
             
-            // Lower hanger clevis ears (rise straight up into the air during printing)
+            // Lower hanger clevis ears
             translate([0, (wheel_slot_width + wall_thickness) / 2, carriage_height + clevis_ear_h / 2])
                 cube([14.0, wall_thickness, clevis_ear_h], center = true);
             translate([0, -(wheel_slot_width + wall_thickness) / 2, carriage_height + clevis_ear_h / 2])
                 cube([14.0, wall_thickness, clevis_ear_h], center = true);
         }
 
-        // Inner wheel channel (open to the top = completely support-free!)
+        // Inner wheel channel opening straight up
         translate([0, 0, carriage_height / 2 + 2.5])
             cube([carriage_length + 2, wheel_slot_width, carriage_height], center = true);
 
-        // Front & Rear Wheel Axle Holes (38mm spacing)
-        translate([wheel_spacing / 2, 0, carriage_height - 7.5])
-            rotate([90, 0, 0])
-                cylinder(d = axle_dia, h = total_width + 4, center = true);
-        translate([-wheel_spacing / 2, 0, carriage_height - 7.5])
-            rotate([90, 0, 0])
-                cylinder(d = axle_dia, h = total_width + 4, center = true);
-
-        // Captive M3 Nut Pockets (Nut locks into one side so you only need one screwdriver!)
-        translate([wheel_spacing / 2, total_width / 2 - 1.5, carriage_height - 7.5])
-            rotate([90, 30, 0])
-                cylinder(d = 6.4, h = 3.5, $fn = 6, center = true);
-        translate([-wheel_spacing / 2, total_width / 2 - 1.5, carriage_height - 7.5])
-            rotate([90, 30, 0])
-                cylinder(d = 6.4, h = 3.5, $fn = 6, center = true);
+        // Side axle pin holes for the 2 wheels (3.4mm diameter)
+        for (x = [-wheel_spacing / 2, wheel_spacing / 2]) {
+            translate([x, 0, carriage_height - 3.5])
+                rotate([90, 0, 0])
+                    cylinder(d = axle_dia, h = total_width + 2, center = true);
+        }
 
         // Hanger arm pivot hole through the clevis ears
         translate([0, 0, carriage_height + clevis_ear_h / 2])
             rotate([90, 0, 0])
                 cylinder(d = hanger_pivot_dia, h = total_width + 4, center = true);
 
-        // Captive M3 nut pocket on hanger clevis ear
-        translate([0, total_width / 2 - 1.5, carriage_height + clevis_ear_h / 2])
-            rotate([90, 30, 0])
-                cylinder(d = 6.4, h = 3.5, $fn = 6, center = true);
-
         // Phase 2 Pre-Engineered Haul-Line Clamp / Tie-Off slots
-        translate([10, 0, 8])
+        translate([5, 0, 4])
             rotate([0, 90, 0])
-                cylinder(d = 2.5, h = 6, center = true);
-        translate([-10, 0, 8])
+                cylinder(d = 2.0, h = 4, center = true);
+        translate([-5, 0, 4])
             rotate([0, 90, 0])
-                cylinder(d = 2.5, h = 6, center = true);
-
-        // Visual Direction Arrow debossed on top of carriage (depth = 0.6mm into flat base)
-        translate([0, 0, 0])
-            linear_extrude(height = 0.6)
-                polygon([[-8, -2], [2, -2], [2, -4.5], [8, 0], [2, 4.5], [2, 2], [-8, 2]]);
+                cylinder(d = 2.0, h = 4, center = true);
     }
 }
+
 
 // Operational upright orientation (used for assembly preview)
 module trolley_carriage() {

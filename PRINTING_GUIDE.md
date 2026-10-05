@@ -12,8 +12,11 @@ Each file prints a **single object** (or matched pair) centered right in the mid
 | :---: | :--- | :--- | :--- | :---: | :---: |
 | **01** | [`01_gondola_single_piece.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/01_gondola_single_piece.scad) | Unified Gondola Cabin & Roof (1-Piece) | Festive Red / Alpine Green | 15–20% | ~25–35 min |
 | **03** | [`03_hanger_arm.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/03_hanger_arm.scad) | Flat C-Hanger Arm | Silver / Black / White | 100% | ~12–18 min |
-| **04** | [`04_trolley_carriage.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/04_trolley_carriage.scad) | Inverted U-Chassis | Black / Dark Gray | 30% | ~20–25 min |
+| **04** | [`04_trolley_carriage.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/04_trolley_carriage.scad) | Inverted U-Chassis (Integrated Axles) | Black / Dark Gray | 30% | ~20–25 min |
 | **05** | [`05_trolley_wheels_pair.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/05_trolley_wheels_pair.scad) | Pair of Grooved Rollers | Gold / Yellow / Bronze | 100% | ~15–20 min |
+
+
+
 | **06A** | [`06a_tower_a_socket.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/06a_tower_a_socket.scad) | Tower A Mast Socket | Forest Green / Black | 30% | ~12–15 min |
 | **06B** | [`06b_tower_a_bracket.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/06b_tower_a_bracket.scad) | Tower A Head Bracket | Forest Green / Black | 30% | ~15–20 min |
 | **07A** | [`07a_tower_b_socket.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/07a_tower_b_socket.scad) | Tower B Mast Socket | Forest Green / Black | 30% | ~12–15 min |
