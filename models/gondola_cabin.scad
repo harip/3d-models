@@ -37,69 +37,68 @@ module rounded_box(l, w, h, r) {
 
 // 1. Cabin Body (Sits flat on build plate at Z=0, zero supports needed)
 module cabin_body() {
-    door_w = cabin_l * 0.45;
-    door_h = cabin_h * 0.75;
+    door_w = cabin_l * 0.42;
+    door_h = cabin_h * 0.72; // Raised bottom edge slightly above Z=0
+    door_z = 0.6 + door_h / 2; // Bottom of door molding rests at Z = 0.6mm
     
     difference() {
         union() {
-            // Outer shell
+            // Outer shell (Flat at Z = 0)
             rounded_box(cabin_l, cabin_w, cabin_h, corner_r);
             
             // Outer door frame molding / trim on sides (+Y and -Y)
             for (y_sign = [-1, 1]) {
-                translate([0, y_sign * (cabin_w / 2 + 0.1), door_h / 2])
-                    cube([door_w + 0.8, 0.4, door_h + 0.8], center = true);
+                translate([0, y_sign * (cabin_w / 2 + 0.1), door_z])
+                    cube([door_w + 0.8, 0.4, door_h], center = true);
             }
         }
         
-        // Hollow interior
+        // Hollow interior (cavity through Z)
         translate([0, 0, wall_th])
-            rounded_box(cabin_l - wall_th*2, cabin_w - wall_th*2, cabin_h + 2, max(1, corner_r - wall_th));
+            rounded_box(cabin_l - wall_th*2, cabin_w - wall_th*2, cabin_h + 2, max(0.8, corner_r - wall_th));
         
         // Door panel recessed outlines and seams on both sides (+Y and -Y)
         for (y_sign = [-1, 1]) {
-            // Door outline
-            translate([0, y_sign * (cabin_w / 2), door_h / 2])
-                cube([door_w, 0.6, door_h], center = true);
+            // Door outline groove
+            translate([0, y_sign * (cabin_w / 2), door_z])
+                cube([door_w, 0.8, door_h], center = true);
 
             // Vertical center line for double-door seam
-            translate([0, y_sign * (cabin_w / 2), door_h / 2])
-                cube([0.3, 0.8, door_h - 0.4], center = true);
+            translate([0, y_sign * (cabin_w / 2), door_z])
+                cube([0.4, 1.2, door_h - 0.4], center = true);
                 
             // Door handles
-            translate([1.2, y_sign * (cabin_w / 2 + 0.1), door_h * 0.45])
+            translate([1.2, y_sign * (cabin_w / 2 + 0.15), door_z])
                 rotate([90, 0, 0])
-                    cylinder(d = 1.0, h = 0.8, center = true);
-            translate([-1.2, y_sign * (cabin_w / 2 + 0.1), door_h * 0.45])
+                    cylinder(d = 1.0, h = 1.0, center = true);
+            translate([-1.2, y_sign * (cabin_w / 2 + 0.15), door_z])
                 rotate([90, 0, 0])
-                    cylinder(d = 1.0, h = 0.8, center = true);
+                    cylinder(d = 1.0, h = 1.0, center = true);
         }
 
-        // Side Windows (including double door windows) with 45° self-supporting arches
-        for (y = [-cabin_w/2 - 2, cabin_w/2 + 2]) {
-            for (x = [-cabin_l/5, cabin_l/5]) {
-                translate([x, y, cabin_h * 0.52])
-                    rotate([90, 0, 0])
-                        hull() {
-                            // Lower rectangular window portion inside door/side frame
-                            rounded_box(cabin_l * 0.28, cabin_h * 0.28, wall_th * 3, 1.2);
-                            // 45-degree pointed top arch for clean 3D bridging without supports
-                            translate([0, cabin_h * 0.18, 0])
-                                rotate([0, 0, 45])
-                                    cube([cabin_l * 0.18, cabin_l * 0.18, wall_th * 3], center = true);
-                        }
-            }
+
+        // LARGE SIDE / DOOR WINDOW CUTOUTS (Punching 100% cleanly through side walls & doors)
+        // Left & Right door window panels (Upper half of the doors are windows!)
+        for (x = [-door_w * 0.26, door_w * 0.26]) {
+            translate([x, 0, cabin_h * 0.58])
+                rotate([90, 0, 0])
+                    hull() {
+                        cube([door_w * 0.38, cabin_h * 0.36, cabin_w + 10], center = true);
+                        translate([0, cabin_h * 0.16, 0])
+                            rotate([0, 0, 45])
+                                cube([door_w * 0.26, door_w * 0.26, cabin_w + 10], center = true);
+                    }
         }
         
-        // Front & Rear Windows
+        // FRONT & REAR LARGE WINDOW CUTOUTS (Punching 100% cleanly through front & back)
         for (x = [-cabin_l/2 - 2, cabin_l/2 + 2]) {
-            translate([x, 0, cabin_h * 0.52])
+            translate([x, 0, cabin_h * 0.56])
                 rotate([0, 90, 0])
                     hull() {
-                        rounded_box(cabin_h * 0.28, cabin_w * 0.48, wall_th * 3, 1.2);
-                        translate([0, cabin_w * 0.15, 0])
+                        cube([cabin_h * 0.42, cabin_w * 0.58, 20], center = true);
+                        translate([0, cabin_w * 0.20, 0])
                             rotate([0, 0, 45])
-                                cube([cabin_w * 0.2, cabin_w * 0.2, wall_th * 3], center = true);
+                                cube([cabin_w * 0.3, cabin_w * 0.3, 20], center = true);
                     }
         }
         
@@ -117,55 +116,60 @@ module cabin_body() {
 
 
 
+
 // 2. Cabin Alpine Roof (100% Flat on Bed at Z=0, ZERO negative Z geometry)
 module cabin_roof() {
-    roof_lip = 3.5;
-    roof_h   = 14.0;
-    clevis_slot_w = 4.8; // Slot width to receive the 4.2mm hanger arm tab
-    clevis_h      = 10.0;
+    roof_lip = 1.2;      // Overhang lip [scaled from 3.5mm]
+    roof_h   = 5.0;      // Pitch height [scaled from 14.0mm]
+    clevis_slot_w = 3.6; // Slot width to receive hanger arm tab (hanger_th = 3.2mm)
+    clevis_h      = 5.0; // Bracket height [scaled from 10.0mm]
     
     difference() {
         union() {
             // Hipped pitched roof starts at Z = 0
             hull() {
-                rounded_box(cabin_l + roof_lip*2, cabin_w + roof_lip*2, 2.5, corner_r + 1);
+                rounded_box(cabin_l + roof_lip*2, cabin_w + roof_lip*2, 1.2, corner_r + 0.4);
                 translate([0, 0, roof_h])
-                    rounded_box(cabin_l * 0.45, cabin_w * 0.25, 1, 2);
+                    rounded_box(cabin_l * 0.45, cabin_w * 0.25, 0.6, 1.0);
             }
             
             // Slotted mounting bracket (clevis) on roof ridge
-            translate([0, 6.0, roof_h + clevis_h / 2])
-                cube([14.0, 12.0, clevis_h], center = true);
+            translate([0, 2.0, roof_h + clevis_h / 2])
+                cube([8.0, 6.0, clevis_h], center = true);
         }
         
-        // Underside recess for cabin rim (goes UPWARDS into the roof from Z = 0 to Z = 2.5, NEVER below Z=0!)
+        // Underside recess for cabin rim (includes +0.25mm 3D-printing slip-fit clearance)
         translate([0, 0, -0.01])
-            rounded_box(cabin_l - wall_th*2 - 0.4, cabin_w - wall_th*2 - 0.4, 2.6, corner_r - wall_th);
+            rounded_box((cabin_l - 1.6) + 0.25, (cabin_w - 1.6) + 0.25, 2.2, max(0.5, corner_r));
 
         // Vertical slot in the mounting bracket to receive the hanger tab
-        translate([0, 6.0, roof_h + clevis_h / 2 + 1])
-            cube([15.0, clevis_slot_w, clevis_h + 4], center = true);
+        translate([0, 2.0, roof_h + clevis_h / 2 + 0.5])
+            cube([9.0, clevis_slot_w, clevis_h + 2], center = true);
 
         // Horizontal cross-pin hole (M3 screw slides through from the outside)
-        translate([0, 6.0, roof_h + clevis_h * 0.55])
+        translate([0, 2.0, roof_h + clevis_h * 0.5])
             rotate([0, 90, 0])
-                cylinder(d = 3.4, h = 18.0, center = true);
+                cylinder(d = 3.4, h = 12.0, center = true);
 
-        // Captive M3 Nut Pocket on -X side of clevis bracket (holds nut captive!)
-        translate([-5.5, 6.0, roof_h + clevis_h * 0.55])
-            rotate([0, 90, 0])
-                cylinder(d = 6.4, h = 3.5, $fn = 6, center = true);
-
-        // Visual alignment arrow debossed on top of clevis
-        translate([0, 6.0, roof_h + clevis_h - 0.5])
-            linear_extrude(height = 1.0)
-                polygon([[-4, -1.5], [1, -1.5], [1, -3], [4, 0], [1, 3], [1, 1.5], [-4, 1.5]]);
-                
         // Alignment keyway pocket (recessed UPWARDS from Z=0)
-        translate([cabin_l / 2 - 4.5, 0, 1.5])
-            cube([4.0, 7.0, 3.2], center = true);
+        translate([cabin_l / 2 - 2.5, 0, 0.8])
+            cube([2.0, 4.0, 1.6], center = true);
+    }
+
+    // Mechanical snap-fit retention nubs (friction-fit lock onto cabin rim - NO GLUE NEEDED!)
+    for (x_sign = [-1, 1]) {
+        translate([x_sign * (cabin_l / 2 - 1.2), 0, 0.9])
+            rotate([0, 90, 0])
+                cylinder(d = 0.6, h = 1.0, center = true, $fn = 16);
+    }
+    for (y_sign = [-1, 1]) {
+        translate([0, y_sign * (cabin_w / 2 - 1.2), 0.9])
+            rotate([90, 0, 0])
+                cylinder(d = 0.6, h = 1.0, center = true, $fn = 16);
     }
 }
+
+
 
 // 3. Hanger Arm (100% Flat Planar 2D Extrusion - ZERO floating geometry!)
 module hanger_arm_flat() {

@@ -61,12 +61,13 @@ translate([gondola_x, 0, cable_z]) {
                 
     // Gondola Roof
     color("darkred")
-        translate([0, 0, -33])
+        translate([0, -2, -28])
             cabin_roof();
             
     // Gondola Cabin Body
     color("crimson")
-        translate([0, 0, -50])
+        translate([0, -2, -44.67])
             cabin_body();
 }
+
 
