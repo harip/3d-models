@@ -9,6 +9,7 @@ use <gondola_cabin.scad>;
 use <trolley_carriage.scad>;
 use <trolley_wheel.scad>;
 use <05_trolley_wheels_pair.scad>;
+use <10_tower_masts_pair.scad>;
 use <tower_head_station_a.scad>;
 use <tower_head_station_b.scad>;
 use <tower_sheave.scad>;
@@ -37,6 +38,9 @@ translate([35, 0, 0])    tower_head_b_bracket();
 translate([10, 45, 0])   tower_sheave();
 translate([35, 45, 0])   tower_sheave();
 
-// 4. Tower Bases (Rear)
+// 4. Tower Bases & Masts (Rear)
 translate([10, 90, 0])   tower_base();
 translate([-40, 90, 0])  tower_base();
+translate([60, -20, 0])  tower_mast_pole();
+translate([60,  20, 0])  tower_mast_pole();
+

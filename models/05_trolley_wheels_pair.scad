@@ -16,20 +16,20 @@ translate([-10.0, 0, 0])
 translate([10.0, 0, 0])
     trolley_wheel();
 
-// 2 3D-Printable Axle Pins standing vertically on flat 5.5mm head at Z = 0
+// 4 3D-Printable Pins (2 for wheels, 1 for carriage-to-hanger, 1 for hanger-to-roof)
 module trolley_axle_pin() {
     // Flat cap head on bed
     cylinder(d = 5.5, h = 1.2, $fn = 40);
-    // Pin shaft (8.2mm long to span 7.8mm total carriage width)
+    // Pin shaft (8.2mm long to span carriage & clevis joints)
     translate([0, 0, 1.2])
         cylinder(d = 3.2, h = 8.2, $fn = 40);
 }
 
-// Separate printable pins placed to the left and right
-translate([-22.0, 0, 0])
-    trolley_axle_pin();
+// 4 pins spaced neatly on the bed
+translate([-22.0, -8.0, 0]) trolley_axle_pin();
+translate([-22.0,  8.0, 0]) trolley_axle_pin();
+translate([ 22.0, -8.0, 0]) trolley_axle_pin();
+translate([ 22.0,  8.0, 0]) trolley_axle_pin();
 
-translate([22.0, 0, 0])
-    trolley_axle_pin();
 
 
