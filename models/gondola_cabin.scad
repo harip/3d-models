@@ -133,41 +133,36 @@ module cabin_roof() {
                     rounded_box(cabin_l * 0.45, cabin_w * 0.25, 0.6, 1.0);
             }
             
-            // Slotted mounting bracket (clevis) on roof ridge
-            translate([0, 2.0, roof_h + clevis_h / 2])
-                cube([8.0, 6.0, clevis_h], center = true);
+            // Solid Clevis Bracket on roof ridge - anchored deeply into Z=0 body
+            translate([0, 0, roof_h / 2])
+                hull() {
+                    cube([12.0, 9.0, 1.0], center = true);
+                    translate([0, 0, roof_h / 2 + clevis_h / 2])
+                        cube([10.0, 7.0, clevis_h + 1], center = true);
+                }
         }
         
-        // Underside recess for cabin rim (includes +0.25mm 3D-printing slip-fit clearance)
+        // Underside recess for cabin rim
         translate([0, 0, -0.01])
             rounded_box((cabin_l - 1.6) + 0.25, (cabin_w - 1.6) + 0.25, 2.2, max(0.5, corner_r));
 
         // Vertical slot in the mounting bracket to receive the hanger tab
-        translate([0, 2.0, roof_h + clevis_h / 2 + 0.5])
-            cube([9.0, clevis_slot_w, clevis_h + 2], center = true);
+        translate([0, 0, roof_h + clevis_h / 2 + 0.5])
+            cube([11.0, clevis_slot_w, clevis_h + 5], center = true);
 
-        // Horizontal cross-pin hole (M3 screw slides through from the outside)
-        translate([0, 2.0, roof_h + clevis_h * 0.5])
+        // Horizontal cross-pin hole (M3 screw slides cleanly through both outer ears)
+        translate([0, 0, roof_h + clevis_h * 0.5])
             rotate([0, 90, 0])
-                cylinder(d = 3.4, h = 12.0, center = true);
+                cylinder(d = 3.6, h = 18.0, center = true);
+
 
         // Alignment keyway pocket (recessed UPWARDS from Z=0)
         translate([cabin_l / 2 - 2.5, 0, 0.8])
             cube([2.0, 4.0, 1.6], center = true);
     }
-
-    // Mechanical snap-fit retention nubs (friction-fit lock onto cabin rim - NO GLUE NEEDED!)
-    for (x_sign = [-1, 1]) {
-        translate([x_sign * (cabin_l / 2 - 1.2), 0, 0.9])
-            rotate([0, 90, 0])
-                cylinder(d = 0.6, h = 1.0, center = true, $fn = 16);
-    }
-    for (y_sign = [-1, 1]) {
-        translate([0, y_sign * (cabin_w / 2 - 1.2), 0.9])
-            rotate([90, 0, 0])
-                cylinder(d = 0.6, h = 1.0, center = true, $fn = 16);
-    }
 }
+
+
 
 
 
