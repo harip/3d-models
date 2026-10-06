@@ -20,10 +20,11 @@ $fn = 40;
 
 // Master Layout on Build Plate (Generously Spaced)
 
-// 1. Gondola Vehicle Assembly (Front Left)
 translate([-40, -30, 0]) gondola_cabin_single_piece();
-translate([-40, 20, 0])  hanger_arm_flat();
-translate([-40, 45, 0])  trolley_carriage_glider_print();
+translate([-40,  30, 0]) unified_glider_hanger_print();
+
+
+
 
 
 // 2. Tower Heads A & B (Center & Front Right)

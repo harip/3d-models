@@ -1,15 +1,13 @@
 // ====================================================================
-// [PRINT 03] Rigid C-Hanger Arm
-// 100% planar 2D extrusion resting completely flat on the print bed.
-// Every single square millimeter touches the bed at Z = 0 like a coin.
-// Layer lines run along the curve for maximum tensile strength.
-// ZERO SUPPORTS NEEDED!
+// [PRINT 03] Unified 1-Piece Cable Glider Carriage & C-Hanger Arm
+// 100% 3D-Printable - ZERO SUPPORTS - ZERO LOOSE PINS - ZERO HARDWARE!
+// Glider Head + C-Hanger Arm are fused into 1 single solid part.
+// Includes solid bottom snap-studs that click directly into the gondola roof!
 // ====================================================================
 
-use <gondola_cabin.scad>;
+use <trolley_carriage.scad>;
 
 $fn = 50;
 
 // Centered on bed at Z = 0
-translate([-13.0, -32.0, 0])
-    hanger_arm_flat();
+unified_glider_hanger_print();

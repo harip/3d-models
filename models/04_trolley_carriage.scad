@@ -1,8 +1,8 @@
 // ====================================================================
-// [PRINT 04] Alpine Cable Glider Sled Runner (100% Wheel-Less)
-// Printed upside down: Top face rests flat on bed at Z = 0.
-// Smooth trumpet funnels at both ends for snag-free cable gliding.
-// ZERO MOVING PARTS, ZERO BRIDGES, ZERO SUPPORTS NEEDED!
+// [PRINT 04] Unified 1-Piece Cable Glider Carriage & C-Hanger Arm
+// (Identical to 03 - Unified 1-Piece Model)
+// Glider Head + C-Hanger Arm are fused into 1 single solid part.
+// Includes solid bottom snap-studs that click directly into the gondola roof!
 // ====================================================================
 
 use <trolley_carriage.scad>;
@@ -10,4 +10,4 @@ use <trolley_carriage.scad>;
 $fn = 50;
 
 // Centered on bed at Z = 0
-trolley_carriage_glider_print();
+unified_glider_hanger_print();

@@ -11,18 +11,18 @@ Each file prints a **single object** (or matched pair) centered right in the mid
 | Step | File | What It Prints | Recommended Color | Slicer Infill | Est. Print Time |
 | :---: | :--- | :--- | :--- | :---: | :---: |
 | **01** | [`01_gondola_single_piece.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/01_gondola_single_piece.scad) | Unified Gondola Cabin & Roof (1-Piece) | Festive Red / Alpine Green | 15–20% | ~25–35 min |
-| **03** | [`03_hanger_arm.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/03_hanger_arm.scad) | Flat C-Hanger Arm | Silver / Black / White | 100% | ~12–18 min |
-| **04** | [`04_trolley_carriage.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/04_trolley_carriage.scad) | Alpine Cable Glider Runner (1-Piece, Wheel-Less) | Black / Dark Gray | 30% | ~8–12 min |
-| **05** | [`05_trolley_wheels_pair.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/05_trolley_wheels_pair.scad) | Pair of Heavy-Duty Assembly Pins | Black / Gray | 100% | ~5 min |
+| **03/04** | [`03_hanger_arm.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/03_hanger_arm.scad) | Unified Glider Carriage & C-Hanger Arm (1-Piece, Snap-Studs) | Black / Silver / White | 100% | ~10–12 min |
 
 ---
 
-## 🛠️ Hardware-Free 3D Pin Assembly Instructions
+## 🛠️ Hardware-Free 100% Snap-In Assembly Instructions
 
-### 1. Vehicle Assembly (Steps 01 – 05)
-1. **Cable Glider Runner:** No wheels needed! The **Alpine Cable Glider Runner** (`04`) features a smooth, flared $45^\circ$ trumpet channel that glides directly along any cord or wire line.
-2. **Attach Hanger Arm:** Slide the lower tab of the **C-Hanger Arm** (`03`) into the roof clevis bracket slot of the **Unified Gondola Cabin** (`01`) and insert a **3D-printed pin** (`05`).
-3. **Hang Glider Carriage:** Slide the top eyelet of the **Hanger Arm** (`03`) into the lower clevis fork of the **Cable Glider Runner** (`04`) and insert the second **3D-printed pin** (`05`).
+### 1. Vehicle Assembly (1-Second Snap Assembly!)
+1. **Snap Glider onto Gondola:** Take the **Unified Glider & Hanger Arm** (`03/04`) and push its bottom built-in snap-studs into the roof clevis bracket of the **Gondola Cabin** (`01`).
+2. **CLICK!** The studs flex into the roof sockets and snap securely into place.
+3. **Hang on Cable Line:** Snap the top glider head onto your cable line.
+4. **ZERO loose pins, ZERO screws, ZERO hardware required!**
+
 
 
 ### 2. Towers & Rigging (Steps 06 – 10)

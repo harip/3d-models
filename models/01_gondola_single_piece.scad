@@ -128,16 +128,27 @@ module gondola_cabin_single_piece() {
                     }
         }
 
-        // Clevis slot for hanger arm tab (centered at Y = 0.0mm)
+        // Roof Clevis Bracket for receiving 1-piece Hanger Arm Snap-Studs
+        // 1. Clevis slot for hanger arm tab (centered at Y = 0.0mm)
         translate([0, 0, cabin_h + roof_h + clevis_h / 2 + 0.5])
             cube([11.0, clevis_slot_w, clevis_h + 5], center = true);
 
-        // Clevis heavy-duty 4.0mm horizontal cross-pin hole
+        // 2. Round bearing socket holes (3.4mm diameter) for hanger arm snap studs
         translate([0, 0, cabin_h + roof_h + clevis_h * 0.5])
             rotate([0, 90, 0])
-                cylinder(d = 4.2, h = 18.0, center = true);
+                cylinder(d = 3.4, h = 18.0, center = true);
+
+        // 3. Open-top vertical snap entry slot (3.0mm constriction width)
+        translate([0, 0, cabin_h + roof_h + clevis_h * 0.75])
+            cube([3.0, clevis_slot_w + 4.0, 5.0], center = true);
+
+        // 4. 45-degree self-guiding lead-in chamfer mouth at top edge
+        translate([0, 0, cabin_h + roof_h + clevis_h + 0.5])
+            rotate([45, 0, 0])
+                cube([4.0, 4.0, 18.0], center = true);
     }
 }
+
 
 
 // Render flat on bed at Z = 0
