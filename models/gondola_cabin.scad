@@ -8,7 +8,7 @@
 // - All parts sit perfectly flat on build plate at Z = 0 (100% support-free).
 // ====================================================================
 
-$fn = 40;
+$fn = 50;
 
 // Cabin Dimensions (mm)
 cabin_w       = 16.0;  // Width
@@ -90,7 +90,7 @@ module cabin_body() {
     }
 }
 
-// 2. Cabin Roof with Snap-Sockets
+// 2. Cabin Roof with Blind Inner Snap-Sockets (ZERO Through-Holes)
 module cabin_roof() {
     roof_lip = 1.2;
     roof_h   = 5.0;
@@ -103,6 +103,7 @@ module cabin_roof() {
                 translate([0, 0, roof_h])
                     rounded_box(cabin_l * 0.45, cabin_w * 0.25, 0.6, 1.0);
             }
+            // Roof Clevis Bracket (Solid outer walls - ZERO exterior holes!)
             translate([0, 0, roof_h / 2])
                 hull() {
                     cube([12.0, 9.0, 1.0], center = true);
@@ -114,14 +115,16 @@ module cabin_roof() {
         translate([0, 0, -0.01])
             rounded_box((cabin_l - 1.6) + 0.25, (cabin_w - 1.6) + 0.25, 2.2, max(0.5, corner_r));
 
-        // Clevis slot for hanger arm
+        // Central receiving slot for C-Hanger Arm bottom tab
         translate([0, 0, roof_h + clevis_h / 2 + 0.5])
             cube([11.0, clevis_slot_w, clevis_h + 5], center = true);
 
-        // Round bearing socket holes (3.4mm diameter) for snap studs
-        translate([0, 0, roof_h + clevis_h * 0.5])
-            rotate([0, 90, 0])
-                cylinder(d = snap_stud_d, h = 18.0, center = true);
+        // Blind inner circular socket detents (3.4mm dia, 1.8mm depth)
+        for (y_sign = [-1, 1]) {
+            translate([0, y_sign * (clevis_slot_w / 2 + 0.9), roof_h + clevis_h * 0.5])
+                rotate([90, 0, 0])
+                    cylinder(d = snap_stud_d, h = 1.8, center = true);
+        }
 
         // Open-top vertical snap entry slot (3.0mm constriction)
         translate([0, 0, roof_h + clevis_h * 0.75])
@@ -171,15 +174,13 @@ module hanger_arm_snap_print() {
         linear_extrude(height = hanger_th)
             hanger_arm_flat_2d();
 
-        // Bottom Integrated Snap-Studs (for Gondola Roof Clevis)
+        // Bottom Integrated Snap-Studs (Protrudes 1.8mm out of left & right sides)
         translate([0, 2.5, hanger_th / 2])
-            rotate([90, 0, 0])
-                cylinder(d = snap_stud_d, h = hanger_th + (snap_stud_l * 2), center = true);
+            cylinder(d = snap_stud_d, h = hanger_th + (snap_stud_l * 2), center = true);
 
-        // Top Integrated Snap-Studs (for Trolley Carriage Clevis)
+        // Top Integrated Snap-Studs (Protrudes 1.8mm out of left & right sides)
         translate([0, hanger_height, hanger_th / 2])
-            rotate([90, 0, 0])
-                cylinder(d = snap_stud_d, h = hanger_th + (snap_stud_l * 2), center = true);
+            cylinder(d = snap_stud_d, h = hanger_th + (snap_stud_l * 2), center = true);
     }
 }
 

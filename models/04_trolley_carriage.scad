@@ -1,9 +1,9 @@
 // ====================================================================
-// [PRINT 04] Alpine Cable Glider Sled Runner (100% Snap-Fit Carriage)
+// [PRINT 04] Alpine Cable Glider Sled Runner (100% Snap-In - Zero Holes)
 // Printed upside down: Top face rests flat on bed at Z = 0.
-// Lower clevis ears feature open 45-degree snap lead-in sockets that click
-// directly onto the top snap-studs of the classic C-Hanger Arm (03).
-// ZERO MOVING PARTS, ZERO BRIDGES, ZERO SUPPORTS NEEDED!
+// Bottom clevis ears feature blind inner snap-detent sockets.
+// C-Hanger Arm top tab pushes straight in and CLICKS!
+// ZERO EXTERIOR HOLES, ZERO BRIDGES, ZERO SUPPORTS NEEDED!
 // ====================================================================
 
 use <trolley_carriage.scad>;
