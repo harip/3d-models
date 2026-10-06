@@ -8,11 +8,13 @@ use <01_gondola_single_piece.scad>;
 use <03_hanger_arm.scad>;
 use <04_trolley_carriage.scad>;
 use <05_trolley_wheels_pair.scad>;
+use <06a_tower_a_socket.scad>;
+use <06b_tower_a_bracket.scad>;
+use <07a_tower_b_socket.scad>;
+use <07b_tower_b_bracket.scad>;
+use <08_tower_sheaves_pair.scad>;
+use <09_tower_base.scad>;
 use <10_tower_masts_pair.scad>;
-use <tower_head_station_a.scad>;
-use <tower_head_station_b.scad>;
-use <tower_sheave.scad>;
-use <tower_base_and_stand.scad>;
 
 
 $fn = 40;

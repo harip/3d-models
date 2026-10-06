@@ -49,10 +49,10 @@ module tower_base() {
                     cylinder(d = 4.5, h = base_th + 4);
         }
 
-        // Cross-pin clamp hole for socket
+        // Cross-pin clamp hole for socket (fits 2.4mm cross-pin / M2.5 screw)
         translate([0, 0, socket_h * 0.6])
             rotate([90, 0, 0])
-                cylinder(d = 4.2, h = socket_inner_d + 16, center = true);
+                cylinder(d = 2.4, h = socket_inner_d + 16, center = true);
     }
 }
 

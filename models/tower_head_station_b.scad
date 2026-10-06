@@ -61,11 +61,14 @@ module tower_head_b_socket() {
 // Includes square receiving pocket for Part A snap post
 // ====================================================================
 module tower_head_b_bracket() {
+    axle_z = 9.53; // Matched to Tower A sheave axle height!
+    body_h_actual = 12.0;
+
     difference() {
         union() {
             // Main horizontal tensioner body
-            translate([body_l / 2 - 4, 0, body_h / 2])
-                cube([body_l, body_w, body_h], center = true);
+            translate([body_l / 2 - 4, 0, axle_z])
+                cube([body_l, body_w, body_h_actual], center = true);
 
             // Lower snap-fit receiving hub (rests flat at Z = 0)
             translate([0, 0, 3.0])
@@ -73,11 +76,11 @@ module tower_head_b_bracket() {
         }
 
         // Inner clevis channel for sheave wheel (fits 4mm sheave rim)
-        translate([body_l / 2 - 2, 0, body_h / 2])
-            cube([body_l + 4, 5.0, body_h + 4], center = true);
+        translate([body_l / 2 - 2, 0, axle_z])
+            cube([body_l + 4, 5.0, body_h_actual + 4], center = true);
 
         // Horizontal tensioning slots on both sides (for axle bolt travel)
-        translate([body_l / 2 - 2, 0, body_h / 2])
+        translate([body_l / 2 - 2, 0, axle_z])
             hull() {
                 translate([-slot_travel / 2, 0, 0])
                     rotate([90, 0, 0])
@@ -88,7 +91,7 @@ module tower_head_b_bracket() {
             }
 
         // Longitudinal tensioner screw hole
-        translate([body_l / 2 + 5, 0, body_h / 2])
+        translate([body_l / 2 + 5, 0, axle_z])
             rotate([0, 90, 0])
                 cylinder(d = 3.4, h = 20, center = true);
 
