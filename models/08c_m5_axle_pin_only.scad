@@ -1,28 +1,30 @@
 // ====================================================================
-// [PRINT 08-C] Standalone 3D-Printable Reduced Axle Pin (4.0mm Rod Diameter)
+// [PRINT 08-C] Standalone 3D-Printable Precision Axle Pin (Flush Fit)
 //
-// Features:
-// - Reduced 4.0mm rod diameter (fits 4.2mm bore sheave).
-// - Length adjusted (17.5mm shaft) for the 10% reduced 4.5mm sheave wheel.
-// - 100% Support-Free: Rests flat on build plate at Z = 0.
+// Engineering Specifications:
+// - Station Clevis Total Outer Span: 14.0mm (4mm Ear1 + 6mm Channel + 4mm Ear2)
+// - Shaft Diameter: 4.0mm (Fits 4.2mm sheave bore & 5.2mm roof bore)
+// - Shaft Length: EXACTLY 14.0mm (0.0mm extra protrusion past clevis walls!)
+// - Head: 9.0mm flat disk x 1.8mm thickness (Rests flush against Ear 1 outer face)
+// - Tip: 4.4mm split-prong barb tip for snap-fitting retaining cap
 // ====================================================================
 
 $fn = 50;
 
-pin_shaft_d  = 4.0;  // Reduced rod diameter (fits 4.2mm bore with 0.2mm clearance)
-pin_length   = 17.5; // Adjusted length for 4.5mm sheave wheel
-head_d       = 9.0;  // Flat head disk diameter
-head_th      = 2.0;  // Flat head thickness
-tip_barb_d   = 4.4;  // Split-prong barb tip diameter
-tip_length   = 4.0;  // Tip length
+pin_shaft_d  = 4.0;   // 4.0mm rod shaft (fits 4.2mm sheave bore with 0.2mm clearance)
+pin_length   = 14.0;  // EXACT 14.0mm shaft length matching total clevis span
+head_d       = 9.0;   // Flat head disk diameter
+head_th      = 1.8;   // Flat head thickness
+tip_barb_d   = 4.4;   // Split-prong barb tip diameter
+tip_length   = 3.2;   // Tip length
 
-module axle_pin() {
+module precision_axle_pin() {
     difference() {
         union() {
             // Flat base head resting flat at Z = 0
             cylinder(d = head_d, h = head_th);
             
-            // Main 4.0mm rod shaft column
+            // Main 4.0mm rod shaft column (exact 14.0mm length)
             translate([0, 0, head_th])
                 cylinder(d = pin_shaft_d, h = pin_length);
 
@@ -32,13 +34,13 @@ module axle_pin() {
         }
 
         // Center flex-slit (gives spring flex space for cap snap-fit)
-        translate([0, 0, head_th + pin_length - 2.0])
-            cube([1.0, tip_barb_d + 2.0, tip_length + 4.0], center = true);
+        translate([0, 0, head_th + pin_length - 1.5])
+            cube([1.0, tip_barb_d + 2.0, tip_length + 3.0], center = true);
 
-        // Self-guiding chamfer on base
+        // Self-guiding chamfer on base head
         translate([0, 0, -0.01])
-            cylinder(d1 = head_d + 1.0, d2 = head_d, h = 0.5);
+            cylinder(d1 = head_d + 1.0, d2 = head_d, h = 0.4);
     }
 }
 
-axle_pin();
+precision_axle_pin();
