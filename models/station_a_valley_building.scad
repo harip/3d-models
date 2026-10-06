@@ -7,8 +7,9 @@
 // - Covered Entrance Porch: Sheltered ticket entry porch supported by twin timber posts.
 // - Panoramic Viewing Windows: Large multi-pane alpine windows revealing ticket counter, waiting table, and benches inside!
 // - Passenger Boarding Terminal: Open 22mm x 26mm tunnel with raised boarding platform.
+// - Plain Baseplate: Trees removed for clean, plain 3D printing!
 // - Roof & Vertical Clevis: 100% UNCHANGED (Axle bore @ Z=61mm, 1.5mm wheel air gap above main roof peak).
-// - 100% Support-Free: Rests flat on mountainous terrain baseplate at Z = 0.
+// - 100% Support-Free: Rests flat on terrain baseplate at Z = 0.
 // ====================================================================
 
 $fn = 40;
@@ -25,7 +26,7 @@ tunnel_h    = 26.0;  // Tunnel clearance height
 // Annex Wing Dimensions (Room 1: Ticket Lounge)
 annex_l     = 32.0;  // Length of Ticket Lounge wing
 annex_w     = 18.0;  // Step-out width to +Y side
-annex_h     = 24.0;  // Annex eaves height (6mm lower for realistic architectural stepping)
+annex_h     = 24.0;  // Annex eaves height
 annex_roof_h= 12.0;  // Annex roof pitch height
 
 module rounded_box(l, w, h, r) {
@@ -36,19 +37,6 @@ module rounded_box(l, w, h, r) {
                     cylinder(r = r, h = h);
             }
         }
-    }
-}
-
-module alpine_pine_tree(h = 16) {
-    trunk_d = max(1.8, h * 0.22);
-    trunk_h = h * 0.35;
-    cylinder(d = trunk_d, h = trunk_h);
-    for (i = [0 : 2]) {
-        tier_z = trunk_h * 0.5 + i * (h * 0.22);
-        tier_d = (h * 0.7) * (1.0 - i * 0.25);
-        tier_h = h * 0.4;
-        translate([0, 0, tier_z])
-            cylinder(d1 = tier_d, d2 = 0.5, h = tier_h);
     }
 }
 
@@ -88,7 +76,7 @@ module boarding_platform() {
 module station_a_valley_building() {
     difference() {
         union() {
-            // 1. Expanded Mountainous Terrain Baseplate (92mm x 82mm Footprint)
+            // 1. Expanded Terrain Baseplate (92mm x 82mm Footprint)
             translate([0, 2.0, 1.25])
                 hull() {
                     rounded_box(building_l + 44.0, building_w + 54.0, 2.5, 8.0);
@@ -156,17 +144,7 @@ module station_a_valley_building() {
                 }
             }
 
-            // 11. 8x Alpine Evergreen Pine Trees
-            translate([-36.0, -30.0, 2.5]) alpine_pine_tree(h = 22);
-            translate([-26.0, -26.0, 2.5]) alpine_pine_tree(h = 15);
-            translate([ 24.0, -28.0, 2.5]) alpine_pine_tree(h = 14);
-            translate([ 36.0, -30.0, 2.5]) alpine_pine_tree(h = 20);
-            translate([ 36.0,  32.0, 2.5]) alpine_pine_tree(h = 18);
-            translate([ 22.0,  30.0, 2.5]) alpine_pine_tree(h = 13);
-            translate([-26.0,  30.0, 2.5]) alpine_pine_tree(h = 16);
-            translate([-36.0,  32.0, 2.5]) alpine_pine_tree(h = 19);
-
-            // 12. 8x Alpine Mountain Landscape Rock Clusters
+            // 11. 8x Alpine Mountain Landscape Rock Clusters (Trees removed for plain finish!)
             translate([-40.0, -12.0, 2.5]) alpine_rock(rx = 8, ry = 6, rz = 4.5);
             translate([-30.0, -32.0, 2.5]) alpine_rock(rx = 6, ry = 5, rz = 3.5);
             translate([ 20.0, -32.0, 2.5]) alpine_rock(rx = 6, ry = 6, rz = 4.0);
@@ -197,8 +175,7 @@ module station_a_valley_building() {
         translate([-2.0, 5.0, 2.5 + 7.5])
             cube([8.0, 6.0, 13.0], center = true);
 
-        // C. Panoramic Multi-Pane Alpine Viewing Windows on Room 1 (Reveals Ticket Desk & Lounge!)
-        // Front Viewing Window on Annex (+X side)
+        // C. Panoramic Multi-Pane Alpine Viewing Windows on Room 1
         translate([14.0, 14.0, 2.5 + 11.0]) {
             cube([wall_th + 4, 12.0, 10.0], center = true);
             rotate([0, 90, 0]) rotate([0, 0, 45]) cube([12.0 / sqrt(2), 12.0 / sqrt(2), wall_th + 4], center = true);
@@ -224,8 +201,7 @@ module station_a_valley_building() {
             }
         }
 
-        // E. Elevated Drive Sheave Axle Bore through Clevis Ears (5.2mm for M5 axle pin)
-        // Positioned at Z = 2.5 + eaves_h + roof_h + 10.5mm so 18mm wheel bottom clears roof peak by 1.5mm!
+        // E. Elevated Drive Sheave Axle Bore through Clevis Ears (EXACT MATCH!)
         translate([0, -5.0, 2.5 + eaves_h + roof_h + 10.5])
             rotate([90, 0, 0])
                 cylinder(d = 5.2, h = building_w + 14, center = true);
