@@ -26,9 +26,9 @@ module tower_head_b_bracket() {
                 cube([10.0, 8.0, 6.0], center = true);
         }
 
-        // Inner clevis channel for sheave wheel (fits 4mm sheave rim)
+        // Inner clevis channel for sheave wheel (fits 5.4mm sheave wheel with 0.6mm clearance)
         translate([body_l / 2 - 2, 0, axle_z])
-            cube([body_l + 4, 5.0, body_h + 4], center = true);
+            cube([body_l + 4, 6.0, body_h + 4], center = true);
 
         // Horizontal tensioning slots on both sides (for axle bolt travel)
         translate([body_l / 2 - 2, 0, axle_z])

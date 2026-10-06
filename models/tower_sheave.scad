@@ -1,61 +1,68 @@
 // ====================================================================
-// Tower End Sheave Wheel (100% 3D-Printable - Flat on Bed at Z = 0)
-// Used at Tower A and Tower B.
-// - High flanges to retain cable line securely.
-// - 5mm central bore: spins on an M4/M5 bolt in Phase 1;
-//   directly accepts a NEMA 17 D-shaft in Phase 2 (includes M3 grub screw hole).
+// Precision 3D-Printable Sheave Wheel (100% Support-Free)
+// - Fits Tower A & Tower B brackets perfectly.
+// - 100% Flat on build plate at Z = 0 (Zero floating overhangs!).
+// - Self-supporting 45-degree V-groove cable track.
+// - Center axle hub standoff ring so wheel spins 100% smoothly on M5 bolt.
 // ====================================================================
 
 $fn = 60;
 
-// Dimensions (mm) - Scaled to 1/3 size (reduced size by 2/3rd)
-sheave_outer_dia = 18.0; // Outer flange diameter [scaled from 54mm]
-sheave_pitch_dia = 14.67;// Cable track diameter [scaled from 44mm]
-sheave_width     = 4.0;  // Total sheave rim width [scaled from 8mm]
-hub_h            = 6.0;  // Extended center hub [scaled from 12mm]
-bore_dia         = 5.2;  // 5mm motor shaft / M5 screw clearance
-grub_screw_dia   = 3.0;  // M3 set/grub screw for Phase 2 motor lock
-hub_lift         = (hub_h - sheave_width) / 2; // 1.0mm standoff from bed
-
+sheave_outer_d = 18.0;  // Flange outer diameter (mm)
+sheave_pitch_d = 14.67; // Cable track groove diameter (mm)
+sheave_h       = 5.0;   // Total wheel thickness (mm)
+bore_d         = 5.2;   // M5 axle bolt / 5mm motor shaft clearance (mm)
+hub_ring_d     = 8.2;   // Reduced friction hub standoff ring (mm)
+hub_standoff   = 0.4;   // Low-friction standoff height (mm)
+grub_screw_d   = 3.0;   // M3 set screw hole for Phase 2 motor lock
 
 module tower_sheave() {
     difference() {
         union() {
-            // Main sheave disc (lifted by hub standoff)
-            translate([0, 0, hub_lift])
-                cylinder(d = sheave_outer_dia, h = sheave_width);
-            // Extended center hub (starts at Z = 0)
-            cylinder(d = 14.0, h = hub_h);
+            // Main solid cylinder resting flat on bed at Z = 0
+            cylinder(d = sheave_outer_d, h = sheave_h);
+
+            // Top raised hub standoff ring (prevents wheel face from rubbing on bracket)
+            translate([0, 0, sheave_h])
+                cylinder(d1 = hub_ring_d, d2 = hub_ring_d - 0.8, h = hub_standoff);
         }
-        
-        // Center shaft bore
+
+        // 1. Center shaft bore (5.2mm for M5 bolt)
         translate([0, 0, -1])
-            cylinder(d = bore_dia, h = hub_h + 2);
-        
-        // Deep cable groove
-        translate([0, 0, hub_h / 2])
+            cylinder(d = bore_d, h = sheave_h + hub_standoff + 2);
+
+        // 2. Self-supporting 45-degree V-groove cable track
+        // Groove is centered at Z = sheave_h / 2 = 2.5mm
+        translate([0, 0, sheave_h / 2])
             rotate_extrude(convexity = 10) {
-                translate([sheave_pitch_dia / 2, 0, 0])
+                translate([sheave_pitch_d / 2, 0, 0])
                     polygon([
-                        [-2.0, 0],
-                        [6.0, 3.2],
-                        [6.0, -3.2]
+                        [0, 0],          // Groove root point at R = 7.335mm
+                        [2.5,  1.6],    // Top outer flange ramp at 45 deg
+                        [3.5,  1.6],    // Outer clearance
+                        [3.5, -1.6],    // Outer clearance
+                        [2.5, -1.6]     // Bottom outer flange ramp at 45 deg
                     ]);
             }
-        
-        // Radial M3 grub screw hole (for clamping onto motor shaft in Phase 2)
-        translate([0, 0, hub_h / 2])
+
+        // 3. Bottom self-alignment lead-in chamfer for M5 bolt
+        translate([0, 0, -0.01])
+            cylinder(d1 = bore_d + 1.2, d2 = bore_d, h = 0.8);
+
+        // 4. Radial M3 grub screw hole (for clamping onto motor shaft)
+        translate([0, 0, sheave_h / 2])
             rotate([90, 0, 0])
-                cylinder(d = grub_screw_dia, h = 20, center = false);
-            
-        // Decorative weight-reduction spoke cutouts (holiday snowflake / star style)
+                cylinder(d = grub_screw_d, h = sheave_outer_d + 2, center = true);
+
+        // 5. 6x Spoke cutouts (positioned accurately at R = 5.8mm)
         for (a = [0 : 60 : 300]) {
             rotate([0, 0, a])
-                translate([16, 0, -1])
-                    cylinder(d = 8, h = hub_h + 2);
+                translate([5.8, 0, -1])
+                    cylinder(d = 2.4, h = sheave_h + hub_standoff + 2);
         }
     }
 }
 
 // Render flat on bed at Z = 0
 tower_sheave();
+

@@ -13,7 +13,7 @@ base_dia       = 36.67; // Wide footprint [scaled from 110mm]
 base_th        = 3.0;   // Base thickness [scaled from 8mm]
 socket_inner_d = 6.8;   // Fits scaled 6.8mm mast plug [scaled from 20.4mm]
 socket_wall    = 2.0;   // Wall thickness
-socket_h       = 11.0;  // Socket column height [scaled from 32mm]
+socket_h       = 13.0;  // Socket column height [scaled from 39mm]
 
 module tower_base() {
     difference() {
@@ -29,13 +29,13 @@ module tower_base() {
             for (a = [0 : 90 : 270]) {
                 rotate([0, 0, a])
                     translate([socket_inner_d / 2, -socket_wall / 2, 0])
-                        cube([base_dia / 2 - socket_inner_d / 2 - 8, socket_wall, socket_h * 0.7]);
+                        cube([base_dia / 2 - socket_inner_d / 2 - 8, socket_wall, socket_h * 0.6]);
             }
         }
 
-        // Central dowel/mast socket with self-centering lead-in chamfer
+        // Central dowel/mast socket (10mm depth from Z=3mm to Z=13mm)
         translate([0, 0, 3])
-            cylinder(d = socket_inner_d, h = socket_h + 2);
+            cylinder(d = socket_inner_d, h = 11);
         translate([0, 0, socket_h - 2])
             cylinder(d1 = socket_inner_d, d2 = socket_inner_d + 3.0, h = 3.0);
 
@@ -46,8 +46,8 @@ module tower_base() {
                     cylinder(d = 4.5, h = base_th + 4);
         }
 
-        // Cross-pin clamp hole for socket (fits 2.4mm cross-pin / M2.5 screw)
-        translate([0, 0, socket_h * 0.6])
+        // Cross-pin clamp hole for socket (centered at Z = 8.0mm = 5mm above socket floor at Z=3mm)
+        translate([0, 0, 8.0])
             rotate([90, 0, 0])
                 cylinder(d = 2.4, h = socket_inner_d + 16, center = true);
     }
@@ -55,3 +55,4 @@ module tower_base() {
 
 // Render flat on bed at Z = 0
 tower_base();
+
