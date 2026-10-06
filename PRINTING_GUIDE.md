@@ -11,18 +11,19 @@ Each file prints a **single object** (or matched pair) centered right in the mid
 | Step | File | What It Prints | Recommended Color | Slicer Infill | Est. Print Time |
 | :---: | :--- | :--- | :--- | :---: | :---: |
 | **01** | [`01_gondola_single_piece.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/01_gondola_single_piece.scad) | Unified Gondola Cabin & Roof (1-Piece) | Festive Red / Alpine Green | 15–20% | ~25–35 min |
-| **03** | [`03_hanger_arm.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/03_hanger_arm.scad) | Classic C-Hanger Arm (Built-In Snap-Studs) | Silver / Black / White | 100% | ~10–12 min |
-| **04** | [`04_trolley_carriage.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/04_trolley_carriage.scad) | Cable Glider Sled Runner (Snap-Sockets) | Black / Dark Gray | 30% | ~8–12 min |
+| **03** | [`03_hanger_arm.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/03_hanger_arm.scad) | Classic C-Hanger Arm (Heavy-Duty Barb Tabs) | Silver / Black / White | 100% | ~10–12 min |
+| **04** | [`04_trolley_carriage.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/04_trolley_carriage.scad) | Cable Glider Sled Runner (Barb-Lock Sockets) | Black / Dark Gray | 30% | ~8–12 min |
 
 ---
 
 ## 🛠️ Hardware-Free 100% Snap-In Assembly Instructions
 
-### 1. Vehicle Assembly (100% Snap-Fit)
-1. **Snap Hanger into Glider Runner:** Take the **Classic C-Hanger Arm** (`03`) and push its top built-in snap studs up into the bottom clevis of the **Cable Glider Runner** (`04`). **CLICK!**
-2. **Snap Hanger onto Gondola Roof:** Push the bottom built-in snap studs of the **C-Hanger Arm** (`03`) down into the roof clevis bracket of the **Gondola Cabin** (`01`). **CLICK!**
+### 1. Vehicle Assembly (Wedge Barb Snap-Fit)
+1. **Snap Hanger into Glider Runner:** Take the **Classic C-Hanger Arm** (`03`) and push its top wedge arrow-head barb UP into the bottom slot of the **Cable Glider Runner** (`04`). The barbs flex inward and **CLICK** over internal locking shoulders!
+2. **Snap Hanger onto Gondola Roof:** Push the bottom wedge arrow-head barb of the **C-Hanger Arm** (`03`) DOWN into the roof bracket of the **Gondola Cabin** (`01`). The barbs flex inward and **CLICK** over internal roof shoulders!
 3. **Hang on Cable Line:** Snap the glider top head onto your cable line.
-4. **ZERO loose pins, ZERO screws, ZERO hardware required!**
+4. **ZERO tiny pegs, ZERO loose pins, ZERO screws, ZERO hardware required!**
+
 
 
 
