@@ -57,7 +57,8 @@ translate([gondola_x, 0, cable_z]) {
     // Hanger arm
     color("snow")
         translate([0, -2, -28])
-            hanger_arm();
+            hanger_arm_snap_print();
+
                 
     // Gondola Roof
     color("darkred")

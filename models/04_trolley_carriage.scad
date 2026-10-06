@@ -1,8 +1,9 @@
 // ====================================================================
-// [PRINT 04] Unified 1-Piece Cable Glider Carriage & C-Hanger Arm
-// (Identical to 03 - Unified 1-Piece Model)
-// Glider Head + C-Hanger Arm are fused into 1 single solid part.
-// Includes solid bottom snap-studs that click directly into the gondola roof!
+// [PRINT 04] Alpine Cable Glider Sled Runner (100% Snap-Fit Carriage)
+// Printed upside down: Top face rests flat on bed at Z = 0.
+// Lower clevis ears feature open 45-degree snap lead-in sockets that click
+// directly onto the top snap-studs of the classic C-Hanger Arm (03).
+// ZERO MOVING PARTS, ZERO BRIDGES, ZERO SUPPORTS NEEDED!
 // ====================================================================
 
 use <trolley_carriage.scad>;
@@ -10,4 +11,4 @@ use <trolley_carriage.scad>;
 $fn = 50;
 
 // Centered on bed at Z = 0
-unified_glider_hanger_print();
+trolley_carriage_glider_print();

@@ -21,7 +21,9 @@ $fn = 40;
 // Master Layout on Build Plate (Generously Spaced)
 
 translate([-40, -30, 0]) gondola_cabin_single_piece();
-translate([-40,  30, 0]) unified_glider_hanger_print();
+translate([-40,  20, 0]) hanger_arm_snap_print();
+translate([-40,  50, 0]) trolley_carriage_glider_print();
+
 
 
 

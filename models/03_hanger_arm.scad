@@ -1,13 +1,14 @@
 // ====================================================================
-// [PRINT 03] Unified 1-Piece Cable Glider Carriage & C-Hanger Arm
-// 100% 3D-Printable - ZERO SUPPORTS - ZERO LOOSE PINS - ZERO HARDWARE!
-// Glider Head + C-Hanger Arm are fused into 1 single solid part.
-// Includes solid bottom snap-studs that click directly into the gondola roof!
+// [PRINT 03] Classic C-Hanger Arm (100% Snap-Fit)
+// Includes solid integrated top & bottom snap-studs!
+// - Snaps into Trolley Carriage (04) at the top.
+// - Snaps into Gondola Roof (01) at the bottom.
+// ZERO SUPPORTS NEEDED - Sits flat on bed at Z = 0!
 // ====================================================================
 
-use <trolley_carriage.scad>;
+use <gondola_cabin.scad>;
 
 $fn = 50;
 
 // Centered on bed at Z = 0
-unified_glider_hanger_print();
+hanger_arm_snap_print();
