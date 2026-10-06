@@ -16,11 +16,11 @@ cabin_h       = 16.67; // Body height [scaled from 50mm]
 wall_th       = 1.2;   // Wall thickness [scaled from 2.4mm]
 corner_r      = 2.0;   // Rounded corner radius [scaled from 6mm]
 
-// Hanger Dimensions - Scaled envelope, functional hardware preserved
-hanger_height = 21.67; // Vertical clearance from roof to trolley [scaled from 65mm]
-hanger_offset = 8.67;  // Side offset to clear the cable line [scaled from 26mm]
-hanger_th     = 3.2;   // Arm thickness [adjusted for printable stability]
-pivot_pin_d   = 3.4;   // Hole matching trolley lower pivot (M3 screw standard fit)
+// Hanger Dimensions - Heavy-Duty Redesign
+hanger_height = 24.00; // Vertical clearance from roof to trolley
+hanger_offset = 10.00; // Side offset to clear the cable line
+hanger_th     = 4.0;   // Heavy-duty 4.0mm arm thickness
+pivot_pin_d   = 4.2;   // Hole matching 4.0mm heavy-duty axle pin
 
 
 // Helper: Rounded Box
@@ -121,7 +121,7 @@ module cabin_body() {
 module cabin_roof() {
     roof_lip = 1.2;      // Overhang lip [scaled from 3.5mm]
     roof_h   = 5.0;      // Pitch height [scaled from 14.0mm]
-    clevis_slot_w = 3.6; // Slot width to receive hanger arm tab (hanger_th = 3.2mm)
+    clevis_slot_w = 4.6; // Slot width to receive 4.0mm hanger arm tab
     clevis_h      = 5.0; // Bracket height [scaled from 10.0mm]
     
     difference() {
@@ -150,10 +150,11 @@ module cabin_roof() {
         translate([0, 0, roof_h + clevis_h / 2 + 0.5])
             cube([11.0, clevis_slot_w, clevis_h + 5], center = true);
 
-        // Horizontal cross-pin hole (M3 screw slides cleanly through both outer ears)
+        // Horizontal cross-pin hole for heavy-duty 4.0mm axle pin
         translate([0, 0, roof_h + clevis_h * 0.5])
             rotate([0, 90, 0])
-                cylinder(d = 3.6, h = 18.0, center = true);
+                cylinder(d = 4.2, h = 18.0, center = true);
+
 
 
         // Alignment keyway pocket (recessed UPWARDS from Z=0)

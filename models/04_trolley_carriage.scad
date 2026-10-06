@@ -1,9 +1,8 @@
 // ====================================================================
-// [PRINT 04] Trolley Carriage (Inverted U-Chassis)
-// Printed upside down: flat top face rests directly on the bed at Z = 0.
-// Wheel and cable channel opens straight up to the sky.
-// Includes captive M3 nut pockets for axles and hanger clevis.
-// ZERO BRIDGES, ZERO OVERHANGS, ZERO SUPPORTS NEEDED!
+// [PRINT 04] Alpine Cable Glider Sled Runner (100% Wheel-Less)
+// Printed upside down: Top face rests flat on bed at Z = 0.
+// Smooth trumpet funnels at both ends for snag-free cable gliding.
+// ZERO MOVING PARTS, ZERO BRIDGES, ZERO SUPPORTS NEEDED!
 // ====================================================================
 
 use <trolley_carriage.scad>;
@@ -11,4 +10,4 @@ use <trolley_carriage.scad>;
 $fn = 50;
 
 // Centered on bed at Z = 0
-trolley_carriage_print();
+trolley_carriage_glider_print();

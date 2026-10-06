@@ -18,9 +18,9 @@ wall_th       = 1.2;   // Wall thickness
 corner_r      = 2.0;   // Rounded corner radius
 
 // Hanger Dimensions
-hanger_height = 21.67;
-hanger_offset = 8.67;
-hanger_th     = 3.2;
+hanger_height = 24.0;
+hanger_offset = 10.0;
+hanger_th     = 4.0;
 
 module rounded_box(l, w, h, r) {
     hull() {
@@ -40,7 +40,7 @@ module gondola_cabin_single_piece() {
     
     roof_lip = 1.2;
     roof_h   = 5.0;
-    clevis_slot_w = 3.6;
+    clevis_slot_w = 4.6;
     clevis_h      = 5.0;
 
     difference() {
@@ -132,14 +132,14 @@ module gondola_cabin_single_piece() {
         translate([0, 0, cabin_h + roof_h + clevis_h / 2 + 0.5])
             cube([11.0, clevis_slot_w, clevis_h + 5], center = true);
 
-        // Clevis M3 horizontal cross-pin hole (punches cleanly through both ears)
+        // Clevis heavy-duty 4.0mm horizontal cross-pin hole
         translate([0, 0, cabin_h + roof_h + clevis_h * 0.5])
             rotate([0, 90, 0])
-                cylinder(d = 3.6, h = 18.0, center = true);
+                cylinder(d = 4.2, h = 18.0, center = true);
     }
 }
 
 
-
 // Render flat on bed at Z = 0
 gondola_cabin_single_piece();
+

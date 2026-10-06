@@ -1,43 +1,55 @@
 // ====================================================================
-// Trolley Roller Wheel (100% 3D-Printable - Flat on Bed at Z = 0)
-// Grooved sheave designed to roll directly on a 1.0 - 2.0 mm cable line.
-// Spins freely on a standard M3 or M4 screw / pin axle.
+// Trolley Roller Wheel - Large 18mm Heavy-Duty Design
+// Includes built-in 22mm sacrificial print adhesion brim disk!
+// - Sticks 100% solidly to any build plate without tipping/warping.
+// - Snaps or trims off easily with fingernails or cutters after printing!
 // ====================================================================
 
-$fn = 60; // Smooth curve resolution
+$fn = 60; // High circular resolution
 
-// Parameters - Enlarged & Print-Optimized (Robust 3D Printing)
-wheel_outer_dia   = 12.0; // Outer flange diameter (mm)
-groove_root_dia   = 8.5;  // Bottom of groove diameter (mm) - solid wall around bore!
-wheel_thickness   = 3.2;  // Total thickness along axle (mm)
-groove_width      = 2.0;  // Cable track width (mm)
-axle_hole_dia     = 3.4;  // Fits standard M3 screw / 3D-printed 3.2mm axle pin
-hub_lip_extension = 0.4;  // Built-in standoff hub so wheel faces don't rub
-hub_dia           = 6.0;  // Diameter of built-in standoff spacer
+// Dimensions (mm) - Large Heavy-Duty 18mm Wheel
+wheel_outer_dia   = 18.0; // Outer flange diameter (matches tower sheaves)
+groove_root_dia   = 13.5; // Bottom of cable groove diameter (solid wall!)
+wheel_thickness   = 4.5;  // Total rim thickness
+groove_width      = 3.0;  // Cable track width
+axle_hole_dia     = 4.2;  // Fits heavy-duty 4.0mm axle pin cleanly
+hub_lip_extension = 0.5;  // Standoff spacer on each side (total width across hubs = 5.5mm)
+hub_dia           = 8.0;  // Standoff spacer diameter
+brim_dia          = 22.0; // Built-in sacrificial bed adhesion brim disk diameter
 
 
-total_wheel_h = wheel_thickness + (hub_lip_extension * 2);
-
-module trolley_wheel_body(od = wheel_outer_dia, root_d = groove_root_dia, th = wheel_thickness, axle_d = axle_hole_dia) {
+module trolley_wheel_body() {
     difference() {
         union() {
-            // Main wheel body
+            // Built-in sacrificial bed-adhesion brim disk (22mm wide, 0.35mm height)
+            // Provides massive surface contact so the wheel NEVER detaches while printing!
+            cylinder(d = brim_dia, h = 0.35);
+
+            // Built-in standoff hub spacers (starts at Z = 0)
+            cylinder(d = hub_dia, h = wheel_thickness + (hub_lip_extension * 2));
+
+            // Main wheel body (lifted by lower hub spacer)
             translate([0, 0, hub_lip_extension])
-                cylinder(d = od, h = th);
-            // Built-in hub spacers on both sides (starts at Z = 0)
-            cylinder(d = hub_dia, h = th + (hub_lip_extension * 2));
+                cylinder(d = wheel_outer_dia, h = wheel_thickness);
         }
         
-        // Central axle bore
+        // Central heavy-duty axle bore (4.2mm)
         translate([0, 0, -1])
-            cylinder(d = axle_d, h = th + (hub_lip_extension * 2) + 2);
+            cylinder(d = axle_hole_dia, h = wheel_thickness + (hub_lip_extension * 2) + 2);
         
         // Deep V/U Cable groove around the perimeter
-        translate([0, 0, (th / 2) + hub_lip_extension])
+        translate([0, 0, (wheel_thickness / 2) + hub_lip_extension])
             rotate_extrude(convexity = 10) {
-                translate([root_d / 2 + (od - root_d) / 4, 0, 0])
+                translate([groove_root_dia / 2 + (wheel_outer_dia - groove_root_dia) / 4, 0, 0])
                     rotate([0, 0, 45])
                         square([groove_width * 1.1, groove_width * 1.1], center = true);
+            }
+
+        // Sacrificial breakaway score line (0.2mm notch for easy snap-off after printing)
+        translate([0, 0, -0.1])
+            difference() {
+                cylinder(d = brim_dia + 1.0, h = 0.25);
+                cylinder(d = hub_dia + 0.8, h = 0.5);
             }
     }
 }

@@ -12,36 +12,25 @@ Each file prints a **single object** (or matched pair) centered right in the mid
 | :---: | :--- | :--- | :--- | :---: | :---: |
 | **01** | [`01_gondola_single_piece.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/01_gondola_single_piece.scad) | Unified Gondola Cabin & Roof (1-Piece) | Festive Red / Alpine Green | 15–20% | ~25–35 min |
 | **03** | [`03_hanger_arm.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/03_hanger_arm.scad) | Flat C-Hanger Arm | Silver / Black / White | 100% | ~12–18 min |
-| **04** | [`04_trolley_carriage.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/04_trolley_carriage.scad) | Inverted U-Chassis (Integrated Axles) | Black / Dark Gray | 30% | ~20–25 min |
-| **05** | [`05_trolley_wheels_pair.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/05_trolley_wheels_pair.scad) | Pair of Grooved Rollers | Gold / Yellow / Bronze | 100% | ~15–20 min |
-
-
-
-| **06A** | [`06a_tower_a_socket.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/06a_tower_a_socket.scad) | Tower A Mast Socket | Forest Green / Black | 30% | ~12–15 min |
-| **06B** | [`06b_tower_a_bracket.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/06b_tower_a_bracket.scad) | Tower A Head Bracket | Forest Green / Black | 30% | ~15–20 min |
-| **07A** | [`07a_tower_b_socket.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/07a_tower_b_socket.scad) | Tower B Mast Socket | Forest Green / Black | 30% | ~12–15 min |
-| **07B** | [`07b_tower_b_bracket.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/07b_tower_b_bracket.scad) | Tower B Tensioner Bracket | Forest Green / Black | 30% | ~15–20 min |
-| **08** | [`08_tower_sheaves_pair.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/08_tower_sheaves_pair.scad) | Pair of 18mm Sheaves | Gold / Silver | 30% | ~30–40 min |
-| **09** | [`09_tower_base.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/09_tower_base.scad) | 36mm Baseplate *(Print 2x)* | Dark Slate / White | 20% | ~20–30 min each |
-
-
+| **04** | [`04_trolley_carriage.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/04_trolley_carriage.scad) | Alpine Cable Glider Runner (1-Piece, Wheel-Less) | Black / Dark Gray | 30% | ~8–12 min |
+| **05** | [`05_trolley_wheels_pair.scad`](file:///Users/lavanyat/Documents/Hari/Projects/3d-models/models/05_trolley_wheels_pair.scad) | Pair of Heavy-Duty Assembly Pins | Black / Gray | 100% | ~5 min |
 
 ---
 
-## 🛠️ Assembly Instructions
+## 🛠️ Hardware-Free 3D Pin Assembly Instructions
 
 ### 1. Vehicle Assembly (Steps 01 – 05)
-1. **Trolley Rollers:** Drop two M3 locknuts into the captive hex pockets of the **Trolley Carriage** (`04`). Place the **2 Wheels** (`05`) into the channel and insert M3 $\times$ 16mm screws. Tighten until snug; check that wheels spin freely.
-2. **Attach Hanger Arm:** Slide the lower tab of the **C-Hanger Arm** (`03`) into the top roof bracket slot of the **Unified Gondola Cabin** (`01`) and secure with an M3 $\times$ 16mm screw.
+1. **Cable Glider Runner:** No wheels needed! The **Alpine Cable Glider Runner** (`04`) features a smooth, flared $45^\circ$ trumpet channel that glides directly along any cord or wire line.
+2. **Attach Hanger Arm:** Slide the lower tab of the **C-Hanger Arm** (`03`) into the roof clevis bracket slot of the **Unified Gondola Cabin** (`01`) and insert a **3D-printed pin** (`05`).
+3. **Hang Glider Carriage:** Slide the top eyelet of the **Hanger Arm** (`03`) into the lower clevis fork of the **Cable Glider Runner** (`04`) and insert the second **3D-printed pin** (`05`).
 
-4. **Hang on Carriage:** Drop an M3 nut into the lower clevis of the **Trolley Carriage** (`04`). Slide the top eyelet of the **Hanger Arm** (`03`) into the fork and secure with an M3 $\times$ 16mm screw.
 
-### 2. Towers & Rigging (Steps 06 – 09)
-1. **Tower Masts:** Cut two standard **20 mm (or 3/4 inch)** wooden dowels or PVC pipes to your desired display height (e.g. 12–18 inches / 30–45 cm).
-2. **Mount Heads & Bases:** Push the bottom of each mast into a **Tower Base** (`09`), and push **Station A** (`06`) and **Station B** (`07`) onto the tops.
-3. **Mount Sheaves:** Bolt one 54mm **Sheave Wheel** (`08`) onto each tower head using M5 $\times$ 25mm bolts and locknuts.
-4. **Rigging:** String 1.0–1.5mm monofilament or nylon-coated wire across the sheaves and thread through the gondola trolley.
-5. **Tensioning:** Tighten the tensioning bolt on Station B until line sag disappears, and glide your gondola across!
+### 2. Towers & Rigging (Steps 06 – 10)
+1. **Tower Masts:** Plug the lower ends of the **3D-Printed Tower Masts** (`10`) (or wooden dowels) into the sockets on the **Tower Bases** (`09`).
+2. **Mount Station Heads:** Snap **Tower Station A** (`06A`/`06B`) and **Tower Station B** (`07A`/`07B`) onto the top of the mast poles.
+3. **Mount Sheaves:** Snap or bolt one **Sheave Wheel** (`08`) onto each tower head.
+4. **Rigging:** String 1.0–1.5mm line across the sheaves and thread through the gondola trolley wheels!
+
 
 ---
 

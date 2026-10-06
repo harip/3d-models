@@ -1,35 +1,21 @@
 // ====================================================================
-// [PRINT 05] Pair of Grooved Trolley Roller Wheels
-// Deep V-groove for cable, built-in standoff hubs start flush at Z = 0.
-// Print both wheels together spaced comfortably at center of bed.
-// ZERO SUPPORTS NEEDED!
+// [PRINT 05] Vehicle Assembly Pins (Wheel-Less System)
+// 2 Heavy-Duty 4.0mm Axle Pins to connect:
+//   1. Trolley Glider Carriage (04) -> Hanger Arm (03)
+//   2. Hanger Arm (03) -> Gondola Roof (01)
+// ZERO SUPPORTS NEEDED - Sits flat on bed at Z = 0!
 // ====================================================================
 
-use <trolley_wheel.scad>;
+$fn = 40;
 
-$fn = 60;
-
-// 2 wheels spaced comfortably at center of bed
-translate([-10.0, 0, 0])
-    trolley_wheel();
-
-translate([10.0, 0, 0])
-    trolley_wheel();
-
-// 4 3D-Printable Pins (2 for wheels, 1 for carriage-to-hanger, 1 for hanger-to-roof)
-module trolley_axle_pin() {
-    // Flat cap head on bed
-    cylinder(d = 5.5, h = 1.2, $fn = 40);
-    // Pin shaft (8.2mm long to span carriage & clevis joints)
-    translate([0, 0, 1.2])
-        cylinder(d = 3.2, h = 8.2, $fn = 40);
+module trolley_heavy_duty_pin() {
+    // Flat cap head resting at Z = 0
+    cylinder(d = 7.5, h = 1.5);
+    // Heavy-duty 4.0mm shaft (11.0mm length spans clevis ears)
+    translate([0, 0, 1.5])
+        cylinder(d = 4.0, h = 11.0);
 }
 
-// 4 pins spaced neatly on the bed
-translate([-22.0, -8.0, 0]) trolley_axle_pin();
-translate([-22.0,  8.0, 0]) trolley_axle_pin();
-translate([ 22.0, -8.0, 0]) trolley_axle_pin();
-translate([ 22.0,  8.0, 0]) trolley_axle_pin();
-
-
-
+// 2 Heavy-Duty Pins spaced comfortably on build plate at Z = 0
+translate([-8.0, 0, 0]) trolley_heavy_duty_pin();
+translate([ 8.0, 0, 0]) trolley_heavy_duty_pin();

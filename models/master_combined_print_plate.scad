@@ -23,9 +23,8 @@ $fn = 40;
 // 1. Gondola Vehicle Assembly (Front Left)
 translate([-40, -30, 0]) gondola_cabin_single_piece();
 translate([-40, 20, 0])  hanger_arm_flat();
-translate([-40, 45, 0])  trolley_carriage_print();
-translate([-40, 60, 0])  trolley_wheel();
-translate([-30, 60, 0])  trolley_wheel();
+translate([-40, 45, 0])  trolley_carriage_glider_print();
+
 
 // 2. Tower Heads A & B (Center & Front Right)
 translate([10, -30, 0])  tower_head_a_socket();
