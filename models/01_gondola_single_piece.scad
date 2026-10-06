@@ -119,23 +119,16 @@ module gondola_cabin_single_piece() {
                     }
         }
 
-        // --- BLIND INNER SNAP-DETENT SOCKET (ZERO THROUGH-HOLES) ---
+        // --- INTERNAL BARB-LOCK SHOULDER SOCKET (RECEIVES HANGER ARM BARB) ---
         // 1. Central receiving slot for 4.0mm C-Hanger Arm bottom tab
         translate([0, 0, cabin_h + roof_h + clevis_h / 2 + 0.5])
             cube([11.0, clevis_slot_w, clevis_h + 5], center = true);
 
-        // 2. Blind inner circular socket detents (3.4mm dia, 1.8mm depth - stops before outer wall!)
-        for (y_sign = [-1, 1]) {
-            translate([0, y_sign * (clevis_slot_w / 2 + 0.9), cabin_h + roof_h + clevis_h * 0.5])
-                rotate([90, 0, 0])
-                    cylinder(d = snap_stud_d, h = 1.8, center = true);
-        }
+        // 2. Internal Barb-Lock Shoulders (6.5mm width inside slot for 6.2mm barb snap)
+        translate([0, 0, cabin_h + roof_h + 2.0])
+            cube([6.5, clevis_slot_w + 4.0, 2.2], center = true);
 
-        // 3. Open-top vertical snap entry slot (3.0mm constriction)
-        translate([0, 0, cabin_h + roof_h + clevis_h * 0.75])
-            cube([3.0, clevis_slot_w + 4.0, 5.0], center = true);
-
-        // 4. 45-degree self-guiding lead-in mouth
+        // 3. 45-degree self-guiding lead-in mouth at entry
         translate([0, 0, cabin_h + roof_h + clevis_h + 0.5])
             rotate([45, 0, 0])
                 cube([4.0, 4.0, 18.0], center = true);

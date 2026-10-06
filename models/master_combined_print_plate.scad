@@ -5,9 +5,8 @@
 // ====================================================================
 
 use <01_gondola_single_piece.scad>;
-use <gondola_cabin.scad>;
-use <trolley_carriage.scad>;
-use <trolley_wheel.scad>;
+use <03_hanger_arm.scad>;
+use <04_trolley_carriage.scad>;
 use <05_trolley_wheels_pair.scad>;
 use <10_tower_masts_pair.scad>;
 use <tower_head_station_a.scad>;

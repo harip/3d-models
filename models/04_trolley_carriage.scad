@@ -1,14 +1,76 @@
 // ====================================================================
 // [PRINT 04] Alpine Cable Glider Sled Runner (100% Snap-In - Zero Holes)
-// Printed upside down: Top face rests flat on bed at Z = 0.
-// Bottom clevis ears feature blind inner snap-detent sockets.
-// C-Hanger Arm top tab pushes straight in and CLICKS!
-// ZERO EXTERIOR HOLES, ZERO BRIDGES, ZERO SUPPORTS NEEDED!
+//
+// Features:
+// - Top Glider Channel: Smooth cable channel bore with trumpet funnels.
+// - Bottom Barb-Lock Socket: Receives top wedge barb of C-Hanger Arm (03).
+// - Sits 100% flat on build plate at Z = 0 (printed upside down).
+// - ZERO TINY PROTRUSIONS / PINS! ZERO SCREWS! ZERO SUPPORTS NEEDED!
 // ====================================================================
-
-use <trolley_carriage.scad>;
 
 $fn = 50;
 
-// Centered on bed at Z = 0
+chassis_l    = 32.0; // Overall glider length (mm)
+chassis_w    = 10.0; // Overall glider width (mm)
+chassis_h    = 12.0; // Chassis height (mm)
+cable_bore_d = 3.2;  // Inner smooth cable channel diameter
+clevis_gap   = 4.4;  // Fits 4.0mm hanger arm tab
+clevis_ear_h = 6.0;  // Lower clevis ear height
+
+module trolley_carriage_glider_print() {
+    difference() {
+        union() {
+            // Main chassis block (flat on bed at Z = 0)
+            translate([0, 0, chassis_h / 2])
+                cube([chassis_l, chassis_w, chassis_h], center = true);
+            
+            // Lower hanger clevis ears
+            translate([0, (clevis_gap + (chassis_w - clevis_gap)/2) / 2, chassis_h + clevis_ear_h / 2])
+                cube([16.0, (chassis_w - clevis_gap)/2, clevis_ear_h], center = true);
+            translate([0, -(clevis_gap + (chassis_w - clevis_gap)/2) / 2, chassis_h + clevis_ear_h / 2])
+                cube([16.0, (chassis_w - clevis_gap)/2, clevis_ear_h], center = true);
+        }
+
+        // 1. Longitudinal smooth cable tunnel bore
+        translate([0, 0, 4.0])
+            rotate([0, 90, 0])
+                cylinder(d = cable_bore_d, h = chassis_l + 4, center = true);
+
+        // 2. Flared trumpet entry funnels at both ends (+X and -X)
+        translate([chassis_l / 2 - 2, 0, 4.0])
+            rotate([0, 90, 0])
+                cylinder(d1 = cable_bore_d, d2 = 8.5, h = 6.0);
+        translate([-chassis_l / 2 + 2, 0, 4.0])
+            rotate([0, -90, 0])
+                cylinder(d1 = cable_bore_d, d2 = 8.5, h = 6.0);
+
+        // 3. Top snap-entry slot (2.2mm top opening)
+        translate([0, 0, 2.0])
+            cube([chassis_l + 4, 2.2, 5.0], center = true);
+
+        // --- INTERNAL BARB-LOCK SHOULDERS (RECEIVES HANGER ARM BARB) ---
+        // 4. Central receiving slot for 4.0mm C-Hanger Arm top tab
+        translate([0, 0, chassis_h + clevis_ear_h / 2 + 0.5])
+            cube([12.0, clevis_gap, clevis_ear_h + 2], center = true);
+
+        // 5. Internal Barb-Lock Shoulders (6.5mm width inside slot)
+        translate([0, 0, chassis_h + 2.0])
+            cube([6.5, clevis_gap + 4.0, 2.2], center = true);
+
+        // 6. 45-degree self-guiding lead-in chamfer mouth at entry
+        translate([0, 0, chassis_h + clevis_ear_h + 0.5])
+            rotate([45, 0, 0])
+                cube([4.0, 4.0, 18.0], center = true);
+
+        // Optional haul-line tie-off slots (for motorized pull string)
+        translate([6, 0, 8.5])
+            rotate([0, 90, 0])
+                cylinder(d = 2.4, h = chassis_w + 4, center = true);
+        translate([-6, 0, 8.5])
+            rotate([0, 90, 0])
+                cylinder(d = 2.4, h = chassis_w + 4, center = true);
+    }
+}
+
+// Render flat on bed at Z = 0
 trolley_carriage_glider_print();
