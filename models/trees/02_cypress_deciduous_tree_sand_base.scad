@@ -36,50 +36,35 @@ module multi_feature_terrain_base(r = base_radius, rings = 36, sectors = 80, min
             wx = x + 1.8 * sin(y * 0.22 + 0.6) + 1.0 * cos(x * 0.45),
             wy = y + 1.8 * cos(x * 0.20 - 0.8) + 1.0 * sin(y * 0.42),
             
-            // 1. SMOOTH BASE ELEVATIONS: Central hill & gentle rolling mounds
-            smooth_h1 = 3.2 * exp(-((wx + 0.2)*(wx + 0.2) + (wy + 0.2)*(wy + 0.2)) / 35),
-            smooth_h2 = 2.4 * exp(-((wx + 6.5)*(wx + 6.5) + (wy - 5.5)*(wy - 5.5)) / 28),
-            smooth_h3 = 2.2 * exp(-((wx - 6.0)*(wx - 6.0) + (wy + 6.0)*(wy + 6.0)) / 25),
+            // 1. SMOOTH ROLLING HILLS & ROUNDED KNOLSS (Gently rounded mounds & saddles)
+            smooth_h1 = 3.5 * exp(-((wx + 0.2)*(wx + 0.2) + (wy + 0.2)*(wy + 0.2)) / 32),
+            smooth_h2 = 2.8 * exp(-((x + 7.5)*(x + 7.5) + (y - 5.5)*(y - 5.5)) / 22),
+            smooth_h3 = 2.5 * exp(-((x - 7.0)*(x - 7.0) + (y + 7.0)*(y + 7.0)) / 20),
+            smooth_h4 = 2.2 * exp(-((x + 6.0)*(x + 6.0) + (y + 8.0)*(y + 8.0)) / 18),
+            smooth_waves = 1.4 * sin(x * 0.22) * cos(y * 0.20),
             
-            // 2. 360-DEGREE CONTINUOUS RADIAL RIPPLES & CRAG RIDGES ALL AROUND
-            ring_peaks    = 1.5 * cos(6 * angle + 25 * norm_d) * sin(4 * angle - 18 * norm_d),
-            radial_crags  = 1.8 * pow(1.0 - abs(sin(5 * angle + 3.5 * norm_d)), 0.5),
-            radial_gullies= -1.6 * pow(abs(cos(4 * angle - 2.5 * norm_d)), 0.5),
+            // 2. SHARP ROCK NEEDLES & CRAG RIDGES (Pointed peaks & knife-edges)
+            sharp_p1 = 2.4 * exp(-((x - 8.5)*(x - 8.5) + (y - 7.5)*(y - 7.5)) / 5.5),
+            sharp_p2 = 2.2 * exp(-((x + 2.0)*(x + 2.0) + (y - 12.0)*(y - 12.0)) / 5.0),
+            sharp_p3 = 2.0 * exp(-((x - 11.5)*(x - 11.5) + (y + 1.5)*(y + 1.5)) / 4.5),
             
-            // 3. 8-DIRECTIONAL LOCALIZED NEEDLE PEAKS SCATTERED 360-DEGREES ALL AROUND
-            p_N  = 1.7 * exp(-((x - 0.0)*(x - 0.0) + (y - 12.0)*(y - 12.0)) / 5.0),
-            p_NE = 1.9 * exp(-((x - 9.5)*(x - 9.5) + (y - 9.5)*(y - 9.5)) / 4.5),
-            p_E  = 1.8 * exp(-((x - 13.0)*(x - 13.0) + (y - 1.0)*(y - 1.0)) / 4.0),
-            p_SE = 2.0 * exp(-((x - 9.0)*(x - 9.0) + (y + 9.0)*(y + 9.0)) / 4.8),
-            p_S  = 1.7 * exp(-((x - 1.0)*(x - 1.0) + (y + 12.5)*(y + 12.5)) / 4.2),
-            p_SW = 1.9 * exp(-((x + 9.5)*(x + 9.5) + (y + 9.5)*(y + 9.5)) / 4.5),
-            p_W  = 1.8 * exp(-((x + 13.0)*(x + 13.0) + (y + 0.5)*(y + 0.5)) / 4.0),
-            p_NW = 2.0 * exp(-((x + 9.0)*(x + 9.0) + (y - 9.0)*(y - 9.0)) / 4.8),
+            radial_crags   = 1.4 * pow(1.0 - abs(sin(4 * angle + 2.5 * norm_d)), 0.6),
+            radial_gullies = -1.3 * pow(abs(cos(3 * angle - 2.0 * norm_d)), 0.6),
             
-            // 4. 4-DIRECTIONAL DEEP VALLEY POCKETS
-            v_NNE = -1.4 * exp(-((x - 4.5)*(x - 4.5) + (y - 11.0)*(y - 11.0)) / 4.0),
-            v_ESE = -1.5 * exp(-((x - 11.0)*(x - 11.0) + (y + 4.5)*(y + 4.5)) / 4.5),
-            v_SSW = -1.4 * exp(-((x + 4.5)*(x + 4.5) + (y + 11.0)*(y + 11.0)) / 4.0),
-            v_WNW = -1.5 * exp(-((x + 11.0)*(x + 11.0) + (y - 4.5)*(y - 4.5)) / 4.5),
+            raw_h = min_h + smooth_h1 + smooth_h2 + smooth_h3 + smooth_h4 + smooth_waves
+                    + sharp_p1 + sharp_p2 + sharp_p3 + radial_crags + radial_gullies,
             
-            // 5. HIGH FREQUENCY MICRO-EROSION TEXTURE
-            micro_peaks = 0.9 * pow(abs(sin(x * 0.9 - y * 1.1 + 1.2)), 3.2),
-            micro_texture = 0.35 * sin(x * 1.6 + y * 1.3) * cos(x * 1.9 - y * 1.7),
-            
-            raw_h = min_h + smooth_h1 + smooth_h2 + smooth_h3 
-                    + ring_peaks + radial_crags + radial_gullies
-                    + p_N + p_NE + p_E + p_SE + p_S + p_SW + p_W + p_NW
-                    + v_NNE + v_ESE + v_SSW + v_WNW
-                    + micro_peaks + micro_texture,
-            
-            step_height = 1.4,
+            // 3. BLEND 50% SMOOTH CONTINUOUS SLOPES WITH 50% TERRACED CLIFF LEDGES
+            step_height = 1.5,
             norm_h = raw_h / step_height,
             floor_h = floor(norm_h),
             frac_h = norm_h - floor_h,
-            cliff_frac = pow(frac_h, 3.5) / (pow(frac_h, 3.5) + pow(1.0 - frac_h, 3.5)),
+            cliff_frac = pow(frac_h, 3.0) / (pow(frac_h, 3.0) + pow(1.0 - frac_h, 3.0)),
             stepped_h = (floor_h + cliff_frac) * step_height,
             
-            z_final = min_h + max(0, stepped_h - min_h) * taper
+            blended_h = 0.45 * raw_h + 0.55 * stepped_h,
+            
+            z_final = min_h + max(0, blended_h - min_h) * taper
         ) (dist >= r - 0.01 ? min_h : z_final);
 
     top_center = [[0, 0, terrain_z(0, 0)]];
@@ -157,8 +142,8 @@ module multi_feature_terrain_base(r = base_radius, rings = 36, sectors = 80, min
     
     all_faces = concat(top_center_faces, top_ring_faces, bot_center_faces, bot_ring_faces, wall_faces);
     
-    // Vibrant Light Warm Ivory Sand Color ([0.98, 0.95, 0.78])
-    color([0.98, 0.95, 0.78])
+    // Light Ivory Cream Color ([0.96, 0.94, 0.88])
+    color([0.96, 0.94, 0.88])
         polyhedron(points = all_verts, faces = all_faces, convexity = 10);
 }
 
