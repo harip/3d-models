@@ -17,7 +17,7 @@ $fn = 32;
 // --------------------------------------------------------------------
 grid_resolution  = 48;    // High grid density for sharp/smooth micro-features
 base_radius      = 20.0;  // Base radius (40mm diameter base disc)
-base_min_thick   = 1.0;   // Minimum base thickness (mm) for flat 3D print bed
+base_min_thick   = 0.4;   // Minimum base thickness below terrain (mm) for flat 3D print bed
 max_mountain_h   = 6.8;   // Maximum mountain height (mm)
 tree_total_h     = 40.0;  // Overall tree height (mm)
 
@@ -244,7 +244,7 @@ module complete_cypress_tree() {
         );
         
         // 2. Tree Trunk & Canopy sitting on center mountain summit (anchored inside terrain)
-        translate([-0.2, -0.2, 3.2]) {
+        translate([-0.2, -0.2, 2.6]) {
             cypress_trunk();
             
             translate([-6.5, -2.5, 25.0]) rotate([12, -15, 20]) foliage_cloud_pad(rx = 7.5, ry = 6.0, rz = 4.2);
