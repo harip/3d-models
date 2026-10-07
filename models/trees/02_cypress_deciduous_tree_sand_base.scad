@@ -22,46 +22,64 @@ max_mountain_h   = 6.8;   // Maximum mountain height (mm)
 tree_total_h     = 40.0;  // Overall tree height (mm)
 
 // --------------------------------------------------------------------
-// 1. SHARP & SMOOTH MULTI-FEATURE TERRAIN BASE MODULE (Pure Polar Polyhedron)
+// 1. SHARP & SMOOTH MULTI-FEATURE TERRAIN BASE MODULE (360-Degree All-Around Crag Polyhedron)
 // --------------------------------------------------------------------
-module multi_feature_terrain_base(r = base_radius, rings = 28, sectors = 64, min_h = base_min_thick, max_h = max_mountain_h) {
+module multi_feature_terrain_base(r = base_radius, rings = 36, sectors = 80, min_h = base_min_thick, max_h = max_mountain_h) {
     function terrain_z(x, y) = 
         let (
             dist = sqrt(x*x + y*y),
             norm_d = min(1.0, dist / r),
             taper = pow(cos(norm_d * 90), 1.15),
+            angle = atan2(y, x),
             
             // Domain warping for organic winding canyon paths
             wx = x + 1.8 * sin(y * 0.22 + 0.6) + 1.0 * cos(x * 0.45),
             wy = y + 1.8 * cos(x * 0.20 - 0.8) + 1.0 * sin(y * 0.42),
             
-            // 1. SMOOTH FEATURES: Rolling hills, broad mounds & gentle saddles
+            // 1. SMOOTH BASE ELEVATIONS: Central hill & gentle rolling mounds
             smooth_h1 = 3.2 * exp(-((wx + 0.2)*(wx + 0.2) + (wy + 0.2)*(wy + 0.2)) / 35),
             smooth_h2 = 2.4 * exp(-((wx + 6.5)*(wx + 6.5) + (wy - 5.5)*(wy - 5.5)) / 28),
             smooth_h3 = 2.2 * exp(-((wx - 6.0)*(wx - 6.0) + (wy + 6.0)*(wy + 6.0)) / 25),
-            smooth_waves = 1.2 * sin(wx * 0.28) * cos(wy * 0.24) + 0.8 * cos(wx * 0.18 + wy * 0.32),
             
-            // 2. SHARP FEATURES: Sharp rock needle peaks, knife-edge crags & V-cut gullies
-            needle1 = 2.8 * exp(-((wx - 5.5)*(wx - 5.5) + (wy - 4.5)*(wy - 4.5)) / 6.0),
-            needle2 = 2.4 * exp(-((wx + 5.0)*(wx + 5.0) + (wy + 5.5)*(wy + 5.5)) / 5.0),
-            needle3 = 2.2 * exp(-((wx - 3.8)*(wx - 3.8) + (wy + 4.2)*(wy + 4.2)) / 4.5),
-            needle4 = 2.0 * exp(-((wx + 4.2)*(wx + 4.2) + (wy - 6.0)*(wy - 6.0)) / 4.0),
+            // 2. 360-DEGREE CONTINUOUS RADIAL RIPPLES & CRAG RIDGES ALL AROUND
+            ring_peaks    = 1.5 * cos(6 * angle + 25 * norm_d) * sin(4 * angle - 18 * norm_d),
+            radial_crags  = 1.8 * pow(1.0 - abs(sin(5 * angle + 3.5 * norm_d)), 0.5),
+            radial_gullies= -1.6 * pow(abs(cos(4 * angle - 2.5 * norm_d)), 0.5),
             
-            sharp_ridges  = 1.8 * pow(1.0 - abs(sin(wx * 0.45 + wy * 0.35)), 0.4),
-            sharp_gullies = -1.6 * pow(abs(cos(wx * 0.38 - wy * 0.42)), 0.4),
+            // 3. 8-DIRECTIONAL LOCALIZED NEEDLE PEAKS SCATTERED 360-DEGREES ALL AROUND
+            p_N  = 1.7 * exp(-((x - 0.0)*(x - 0.0) + (y - 12.0)*(y - 12.0)) / 5.0),
+            p_NE = 1.9 * exp(-((x - 9.5)*(x - 9.5) + (y - 9.5)*(y - 9.5)) / 4.5),
+            p_E  = 1.8 * exp(-((x - 13.0)*(x - 13.0) + (y - 1.0)*(y - 1.0)) / 4.0),
+            p_SE = 2.0 * exp(-((x - 9.0)*(x - 9.0) + (y + 9.0)*(y + 9.0)) / 4.8),
+            p_S  = 1.7 * exp(-((x - 1.0)*(x - 1.0) + (y + 12.5)*(y + 12.5)) / 4.2),
+            p_SW = 1.9 * exp(-((x + 9.5)*(x + 9.5) + (y + 9.5)*(y + 9.5)) / 4.5),
+            p_W  = 1.8 * exp(-((x + 13.0)*(x + 13.0) + (y + 0.5)*(y + 0.5)) / 4.0),
+            p_NW = 2.0 * exp(-((x + 9.0)*(x + 9.0) + (y - 9.0)*(y - 9.0)) / 4.8),
             
-            raw_h = min_h + smooth_h1 + smooth_h2 + smooth_h3 + smooth_waves + needle1 + needle2 + needle3 + needle4 + sharp_ridges + sharp_gullies,
+            // 4. 4-DIRECTIONAL DEEP VALLEY POCKETS
+            v_NNE = -1.4 * exp(-((x - 4.5)*(x - 4.5) + (y - 11.0)*(y - 11.0)) / 4.0),
+            v_ESE = -1.5 * exp(-((x - 11.0)*(x - 11.0) + (y + 4.5)*(y + 4.5)) / 4.5),
+            v_SSW = -1.4 * exp(-((x + 4.5)*(x + 4.5) + (y + 11.0)*(y + 11.0)) / 4.0),
+            v_WNW = -1.5 * exp(-((x + 11.0)*(x + 11.0) + (y - 4.5)*(y - 4.5)) / 4.5),
             
-            step_height = 1.5,
+            // 5. HIGH FREQUENCY MICRO-EROSION TEXTURE
+            micro_peaks = 0.9 * pow(abs(sin(x * 0.9 - y * 1.1 + 1.2)), 3.2),
+            micro_texture = 0.35 * sin(x * 1.6 + y * 1.3) * cos(x * 1.9 - y * 1.7),
+            
+            raw_h = min_h + smooth_h1 + smooth_h2 + smooth_h3 
+                    + ring_peaks + radial_crags + radial_gullies
+                    + p_N + p_NE + p_E + p_SE + p_S + p_SW + p_W + p_NW
+                    + v_NNE + v_ESE + v_SSW + v_WNW
+                    + micro_peaks + micro_texture,
+            
+            step_height = 1.4,
             norm_h = raw_h / step_height,
             floor_h = floor(norm_h),
             frac_h = norm_h - floor_h,
             cliff_frac = pow(frac_h, 3.5) / (pow(frac_h, 3.5) + pow(1.0 - frac_h, 3.5)),
             stepped_h = (floor_h + cliff_frac) * step_height,
             
-            micro_texture = 0.35 * sin(x * 1.6 + y * 1.3) * cos(x * 1.9 - y * 1.7),
-            
-            z_final = min_h + max(0, stepped_h + micro_texture - min_h) * taper
+            z_final = min_h + max(0, stepped_h - min_h) * taper
         ) (dist >= r - 0.01 ? min_h : z_final);
 
     top_center = [[0, 0, terrain_z(0, 0)]];
@@ -234,8 +252,8 @@ module complete_cypress_tree() {
         // 1. Terrain Base
         multi_feature_terrain_base(
             r = base_radius,
-            rings = 28,
-            sectors = 64,
+            rings = 36,
+            sectors = 80,
             min_h = base_min_thick,
             max_h = max_mountain_h
         );
