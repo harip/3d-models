@@ -22,37 +22,34 @@ max_mountain_h   = 6.8;   // Maximum mountain height (mm)
 tree_total_h     = 40.0;  // Overall tree height (mm)
 
 // --------------------------------------------------------------------
-// 1. SHARP & SMOOTH MULTI-FEATURE TERRAIN BASE MODULE (Watertight Mesh)
+// 1. SHARP & SMOOTH MULTI-FEATURE TERRAIN BASE MODULE (Pure Polar Polyhedron)
 // --------------------------------------------------------------------
-module multi_feature_terrain_base(r = base_radius, grid_n = grid_resolution, min_h = base_min_thick, max_h = max_mountain_h) {
-    step = (2 * r) / grid_n;
-    
-    // Procedural Heightfield combining SHARP peaks/gullies & SMOOTH rolling hills
+module multi_feature_terrain_base(r = base_radius, rings = 28, sectors = 64, min_h = base_min_thick, max_h = max_mountain_h) {
     function terrain_z(x, y) = 
         let (
             dist = sqrt(x*x + y*y),
-            taper = (dist >= r - 0.5) ? pow(max(0, (r - dist) / 0.5), 1.15) : 1.0,
+            norm_d = min(1.0, dist / r),
+            taper = pow(cos(norm_d * 90), 1.15),
             
             // Domain warping for organic winding canyon paths
             wx = x + 1.8 * sin(y * 0.22 + 0.6) + 1.0 * cos(x * 0.45),
             wy = y + 1.8 * cos(x * 0.20 - 0.8) + 1.0 * sin(y * 0.42),
             
             // 1. SMOOTH FEATURES: Rolling hills, broad mounds & gentle saddles
-            smooth_h1 = 3.2 * exp(-((wx + 0.2)*(wx + 0.2) + (wy + 0.2)*(wy + 0.2)) / 35), // Central tree summit mount
-            smooth_h2 = 2.4 * exp(-((wx + 6.5)*(wx + 6.5) + (wy - 5.5)*(wy - 5.5)) / 28), // NW smooth mound
-            smooth_h3 = 2.2 * exp(-((wx - 6.0)*(wx - 6.0) + (wy + 6.0)*(wy + 6.0)) / 25), // SE smooth hill
+            smooth_h1 = 3.2 * exp(-((wx + 0.2)*(wx + 0.2) + (wy + 0.2)*(wy + 0.2)) / 35),
+            smooth_h2 = 2.4 * exp(-((wx + 6.5)*(wx + 6.5) + (wy - 5.5)*(wy - 5.5)) / 28),
+            smooth_h3 = 2.2 * exp(-((wx - 6.0)*(wx - 6.0) + (wy + 6.0)*(wy + 6.0)) / 25),
             smooth_waves = 1.2 * sin(wx * 0.28) * cos(wy * 0.24) + 0.8 * cos(wx * 0.18 + wy * 0.32),
             
             // 2. SHARP FEATURES: Sharp rock needle peaks, knife-edge crags & V-cut gullies
-            needle1 = 2.8 * exp(-((wx - 5.5)*(wx - 5.5) + (wy - 4.5)*(wy - 4.5)) / 6.0),  // Sharp NE Needle
-            needle2 = 2.4 * exp(-((wx + 5.0)*(wx + 5.0) + (wy + 5.5)*(wy + 5.5)) / 5.0),  // Sharp SW Needle
-            needle3 = 2.2 * exp(-((wx - 3.8)*(wx - 3.8) + (wy + 4.2)*(wy + 4.2)) / 4.5),  // Sharp SE Needle
-            needle4 = 2.0 * exp(-((wx + 4.2)*(wx + 4.2) + (wy - 6.0)*(wy - 6.0)) / 4.0),  // Sharp NW Needle
+            needle1 = 2.8 * exp(-((wx - 5.5)*(wx - 5.5) + (wy - 4.5)*(wy - 4.5)) / 6.0),
+            needle2 = 2.4 * exp(-((wx + 5.0)*(wx + 5.0) + (wy + 5.5)*(wy + 5.5)) / 5.0),
+            needle3 = 2.2 * exp(-((wx - 3.8)*(wx - 3.8) + (wy + 4.2)*(wy + 4.2)) / 4.5),
+            needle4 = 2.0 * exp(-((wx + 4.2)*(wx + 4.2) + (wy - 6.0)*(wy - 6.0)) / 4.0),
             
             sharp_ridges  = 1.8 * pow(1.0 - abs(sin(wx * 0.45 + wy * 0.35)), 0.4),
             sharp_gullies = -1.6 * pow(abs(cos(wx * 0.38 - wy * 0.42)), 0.4),
             
-            // 3. Sigmoid Mesa Plateau Stepping (creates flat top ledges + cliff drop-offs)
             raw_h = min_h + smooth_h1 + smooth_h2 + smooth_h3 + smooth_waves + needle1 + needle2 + needle3 + needle4 + sharp_ridges + sharp_gullies,
             
             step_height = 1.5,
@@ -60,77 +57,91 @@ module multi_feature_terrain_base(r = base_radius, grid_n = grid_resolution, min
             floor_h = floor(norm_h),
             frac_h = norm_h - floor_h,
             cliff_frac = pow(frac_h, 3.5) / (pow(frac_h, 3.5) + pow(1.0 - frac_h, 3.5)),
-            
             stepped_h = (floor_h + cliff_frac) * step_height,
             
-            // Micro-surface erosion texture (sharp & smooth blend)
             micro_texture = 0.35 * sin(x * 1.6 + y * 1.3) * cos(x * 1.9 - y * 1.7),
             
             z_final = min_h + max(0, stepped_h + micro_texture - min_h) * taper
-        ) z_final;
+        ) (dist >= r - 0.01 ? min_h : z_final);
 
-    top_points = [
-        for (yi = [0 : grid_n])
-            for (xi = [0 : grid_n])
+    top_center = [[0, 0, terrain_z(0, 0)]];
+    bot_center = [[0, 0, 0]];
+    
+    top_ring_points = [
+        for (ri = [1 : rings])
+            let (R = (ri / rings) * r)
+            for (si = [0 : sectors - 1])
                 let (
-                    x = -r + xi * step,
-                    y = -r + yi * step,
+                    ang = si * (360 / sectors),
+                    x = R * cos(ang),
+                    y = R * sin(ang),
                     z = terrain_z(x, y)
                 )
                 [x, y, z]
     ];
     
-    bot_points = [
-        for (yi = [0 : grid_n])
-            for (xi = [0 : grid_n])
+    bot_ring_points = [
+        for (ri = [1 : rings])
+            let (R = (ri / rings) * r)
+            for (si = [0 : sectors - 1])
                 let (
-                    x = -r + xi * step,
-                    y = -r + yi * step,
-                    z = 0
+                    ang = si * (360 / sectors),
+                    x = R * cos(ang),
+                    y = R * sin(ang)
                 )
                 [x, y, 0]
     ];
     
-    all_verts = concat(top_points, bot_points);
-    num_pts = len(top_points);
+    top_verts = concat(top_center, top_ring_points);
+    bot_verts = concat(bot_center, bot_ring_points);
+    all_verts = concat(top_verts, bot_verts);
     
-    function idx(xi, yi) = yi * (grid_n + 1) + xi;
-    function bidx(xi, yi) = num_pts + yi * (grid_n + 1) + xi;
+    num_top = len(top_verts);
     
-    top_faces = [
-        for (yi = [0 : grid_n - 1])
-            for (xi = [0 : grid_n - 1])
-                for (t = [0, 1])
-                    ((xi + yi) % 2 == 0) ?
-                        (t == 0 ? [idx(xi, yi), idx(xi + 1, yi), idx(xi + 1, yi + 1)] :
-                                  [idx(xi, yi), idx(xi + 1, yi + 1), idx(xi, yi + 1)]) :
-                        (t == 0 ? [idx(xi, yi), idx(xi + 1, yi), idx(xi, yi + 1)] :
-                                  [idx(xi + 1, yi), idx(xi + 1, yi + 1), idx(xi, yi + 1)])
+    function p_idx(ri, si) = (ri == 0) ? 0 : 1 + (ri - 1) * sectors + (si % sectors);
+    function b_idx(ri, si) = num_top + p_idx(ri, si);
+    
+    top_center_faces = [
+        for (si = [0 : sectors - 1])
+            [0, p_idx(1, si), p_idx(1, si + 1)]
     ];
     
-    bot_faces = [
-        for (yi = [0 : grid_n - 1])
-            for (xi = [0 : grid_n - 1])
+    bot_center_faces = [
+        for (si = [0 : sectors - 1])
+            [b_idx(0, 0), b_idx(1, si + 1), b_idx(1, si)]
+    ];
+    
+    top_ring_faces = [
+        for (ri = [1 : rings - 1])
+            for (si = [0 : sectors - 1])
                 for (t = [0, 1])
                     t == 0 ?
-                        [bidx(xi, yi), bidx(xi + 1, yi + 1), bidx(xi + 1, yi)] :
-                        [bidx(xi, yi), bidx(xi, yi + 1), bidx(xi + 1, yi + 1)]
+                        [p_idx(ri, si), p_idx(ri + 1, si), p_idx(ri + 1, si + 1)] :
+                        [p_idx(ri, si), p_idx(ri + 1, si + 1), p_idx(ri, si + 1)]
     ];
     
-    wall_south = [ for (xi = [0 : grid_n - 1]) for (t = [0, 1]) t == 0 ? [idx(xi, 0), bidx(xi, 0), bidx(xi + 1, 0)] : [idx(xi, 0), bidx(xi + 1, 0), idx(xi + 1, 0)] ];
-    wall_north = [ for (xi = [0 : grid_n - 1]) for (t = [0, 1]) t == 0 ? [idx(xi, grid_n), idx(xi + 1, grid_n), bidx(xi + 1, grid_n)] : [idx(xi, grid_n), bidx(xi + 1, grid_n), bidx(xi, grid_n)] ];
-    wall_west  = [ for (yi = [0 : grid_n - 1]) for (t = [0, 1]) t == 0 ? [idx(0, yi), idx(0, yi + 1), bidx(0, yi + 1)] : [idx(0, yi), bidx(0, yi + 1), bidx(0, yi)] ];
-    wall_east  = [ for (yi = [0 : grid_n - 1]) for (t = [0, 1]) t == 0 ? [idx(grid_n, yi), bidx(grid_n, yi), bidx(grid_n, yi + 1)] : [idx(grid_n, yi), bidx(grid_n, yi + 1), idx(grid_n, yi + 1)] ];
+    bot_ring_faces = [
+        for (ri = [1 : rings - 1])
+            for (si = [0 : sectors - 1])
+                for (t = [0, 1])
+                    t == 0 ?
+                        [b_idx(ri, si), b_idx(ri + 1, si + 1), b_idx(ri + 1, si)] :
+                        [b_idx(ri, si), b_idx(ri, si + 1), b_idx(ri + 1, si + 1)]
+    ];
     
-    all_faces = concat(top_faces, bot_faces, wall_south, wall_north, wall_west, wall_east);
+    wall_faces = [
+        for (si = [0 : sectors - 1])
+            for (t = [0, 1])
+                t == 0 ?
+                    [p_idx(rings, si), b_idx(rings, si), b_idx(rings, si + 1)] :
+                    [p_idx(rings, si), b_idx(rings, si + 1), p_idx(rings, si + 1)]
+    ];
     
-    // Crisp Light Ivory Cream Color ([0.96, 0.94, 0.88]) for maximum contour visibility
-    color([0.96, 0.94, 0.88]) {
-        intersection() {
-            cylinder(r = r, h = max_h + 15, $fn = 64);
-            polyhedron(points = all_verts, faces = all_faces, convexity = 10);
-        }
-    }
+    all_faces = concat(top_center_faces, top_ring_faces, bot_center_faces, bot_ring_faces, wall_faces);
+    
+    // Vibrant Light Warm Ivory Sand Color ([0.98, 0.95, 0.78])
+    color([0.98, 0.95, 0.78])
+        polyhedron(points = all_verts, faces = all_faces, convexity = 10);
 }
 
 // --------------------------------------------------------------------
@@ -223,13 +234,14 @@ module complete_cypress_tree() {
         // 1. Terrain Base
         multi_feature_terrain_base(
             r = base_radius,
-            grid_n = grid_resolution,
+            rings = 28,
+            sectors = 64,
             min_h = base_min_thick,
             max_h = max_mountain_h
         );
         
-        // 2. Tree Trunk & Canopy sitting on center mountain summit
-        translate([-0.2, -0.2, 6.4]) {
+        // 2. Tree Trunk & Canopy sitting on center mountain summit (anchored inside terrain)
+        translate([-0.2, -0.2, 3.2]) {
             cypress_trunk();
             
             translate([-6.5, -2.5, 25.0]) rotate([12, -15, 20]) foliage_cloud_pad(rx = 7.5, ry = 6.0, rz = 4.2);
