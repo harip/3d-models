@@ -148,15 +148,16 @@ module multi_feature_terrain_base(r = base_radius, rings = 36, sectors = 80, min
 }
 
 // --------------------------------------------------------------------
-// 2. CLEAN ORGANIC CYPRESS TRUNK
+// 2. CLEAN ORGANIC CYPRESS TRUNK WITH WIDE FLARED ROOT BASE
 // --------------------------------------------------------------------
 module cypress_trunk() {
     color([0.45, 0.28, 0.15]) { // Sienna Wood Brown
         union() {
-            cylinder(r1 = 4.2, r2 = 3.0, h = 3.5);
+            // Smooth wide flared trunk base foot (14mm diameter flat bed interface)
+            cylinder(r1 = 7.0, r2 = 3.2, h = 5.0);
             
             hull() {
-                translate([0, 0, 1.0]) cylinder(r1 = 3.0, r2 = 2.3, h = 4.0);
+                translate([0, 0, 3.0]) cylinder(r1 = 3.2, r2 = 2.3, h = 5.0);
                 translate([1.2, 0.8, 8.5]) cylinder(r1 = 2.3, r2 = 1.9, h = 4.0);
             }
             
@@ -168,7 +169,7 @@ module cypress_trunk() {
             for (a = [0 : 60 : 300]) {
                 rotate([0, 0, a])
                     hull() {
-                        translate([2.5, 0, 1.5]) sphere(r = 0.4, $fn = 10);
+                        translate([3.2, 0, 1.5]) sphere(r = 0.45, $fn = 10);
                         translate([1.4, 0.8, 14.5]) sphere(r = 0.3, $fn = 10);
                     }
             }
@@ -230,30 +231,19 @@ module foliage_cloud_pad(rx = 7, ry = 6, rz = 4.5, bump_count = 7) {
 }
 
 // --------------------------------------------------------------------
-// 4. COMPLETE UNIFIED CYPRESS TREE ASSEMBLY
+// 4. COMPLETE UNIFIED CYPRESS TREE ASSEMBLY (No Terrain Base)
 // --------------------------------------------------------------------
 module complete_cypress_tree() {
     union() {
-        // 1. Terrain Base
-        multi_feature_terrain_base(
-            r = base_radius,
-            rings = 36,
-            sectors = 80,
-            min_h = base_min_thick,
-            max_h = max_mountain_h
-        );
+        // Tree Trunk & Canopy sitting flat on print bed (Z = 0)
+        cypress_trunk();
         
-        // 2. Tree Trunk & Canopy sitting on center mountain summit (anchored inside terrain)
-        translate([-0.2, -0.2, 2.6]) {
-            cypress_trunk();
-            
-            translate([-6.5, -2.5, 25.0]) rotate([12, -15, 20]) foliage_cloud_pad(rx = 7.5, ry = 6.0, rz = 4.2);
-            translate([-10.5, -5.5, 30.0]) rotate([15, -10, -10]) foliage_cloud_pad(rx = 6.5, ry = 5.2, rz = 3.8);
-            translate([5.5, 4.5, 26.0]) rotate([-10, 15, -25]) foliage_cloud_pad(rx = 7.0, ry = 5.8, rz = 4.0);
-            translate([9.8, 7.8, 31.5]) rotate([-12, 18, 35]) foliage_cloud_pad(rx = 6.8, ry = 5.5, rz = 3.8);
-            translate([-1.5, -1.0, 35.0]) rotate([5, 0, 45]) foliage_cloud_pad(rx = 9.0, ry = 7.5, rz = 5.0);
-            translate([0.5, 1.0, 27.0]) rotate([-8, 5, 10]) foliage_cloud_pad(rx = 6.0, ry = 5.0, rz = 3.5);
-        }
+        translate([-6.5, -2.5, 25.0]) rotate([12, -15, 20]) foliage_cloud_pad(rx = 7.5, ry = 6.0, rz = 4.2);
+        translate([-10.5, -5.5, 30.0]) rotate([15, -10, -10]) foliage_cloud_pad(rx = 6.5, ry = 5.2, rz = 3.8);
+        translate([5.5, 4.5, 26.0]) rotate([-10, 15, -25]) foliage_cloud_pad(rx = 7.0, ry = 5.8, rz = 4.0);
+        translate([9.8, 7.8, 31.5]) rotate([-12, 18, 35]) foliage_cloud_pad(rx = 6.8, ry = 5.5, rz = 3.8);
+        translate([-1.5, -1.0, 35.0]) rotate([5, 0, 45]) foliage_cloud_pad(rx = 9.0, ry = 7.5, rz = 5.0);
+        translate([0.5, 1.0, 27.0]) rotate([-8, 5, 10]) foliage_cloud_pad(rx = 6.0, ry = 5.0, rz = 3.5);
     }
 }
 
