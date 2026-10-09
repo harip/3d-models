@@ -14,19 +14,20 @@ $fn = 32;
 module pine_tier(r_base, r_top, h_tier, num_fans = 7, dip = 15) {
     color([0.22, 0.48, 0.25]) { // Natural Forest Pine Green
         union() {
-            // Inner support cone (solid manifold core)
-            translate([0, 0, -h_tier * 0.15])
-                cylinder(r1 = r_base * 0.60, r2 = r_top * 0.85, h = h_tier * 1.15);
+            // Gradual 45-degree underside support cone starting smoothly at trunk (0% flat steps)
+            cone_h = h_tier * 1.35;
+            translate([0, 0, -h_tier * 0.45])
+                cylinder(r1 = 3.2, r2 = r_base * 0.82, h = cone_h, $fn = 24);
             
             // Outer drooping bough fans with feathered needle tips
             for (i = [0 : num_fans - 1]) {
                 ang = i * (360 / num_fans);
                 rotate([0, 0, ang]) {
                     rotate([dip, 0, 0]) {
-                        // Curved bough fan arm
+                        // Gradual tapering bough arm (no flat horizontal underside steps)
                         hull() {
-                            translate([0, 0, h_tier * 0.60]) 
-                                scale([1.2, 0.8, 0.8]) sphere(r = r_top * 0.42, $fn = 12);
+                            translate([0, 0, -h_tier * 0.20]) 
+                                cylinder(r1 = 1.5, r2 = r_top * 0.50, h = h_tier * 0.80);
                             translate([0, r_base * 0.85, -h_tier * 0.12]) 
                                 scale([1.4, 0.6, 0.6]) sphere(r = r_base * 0.18, $fn = 12);
                         }
