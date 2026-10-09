@@ -213,10 +213,10 @@ module cypress_trunk() {
 module foliage_cloud_pad(rx = 7, ry = 6, rz = 4.5, bump_count = 7) {
     color([0.18, 0.48, 0.22]) { // Cypress Forest Green
         union() {
-            // Gradual 45-degree self-supporting underside transition cone (0% flat overhangs)
-            cone_h = max(rx, ry) * 1.15;
+            // Pronounced steep conical underside transition cone starting low on branches
+            cone_h = max(rx, ry) * 1.65;
             translate([0, 0, -cone_h])
-                cylinder(r1 = 1.0, r2 = max(rx, ry), h = cone_h, $fn = 24);
+                cylinder(r1 = 1.0, r2 = max(rx, ry), h = cone_h, $fn = 28);
             
             // Upper dome of foliage cloud
             scale([1.0, ry / rx, rz / rx]) 

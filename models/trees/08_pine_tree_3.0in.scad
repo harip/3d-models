@@ -14,10 +14,10 @@ $fn = 32;
 module pine_tier(r_base, r_top, h_tier, num_fans = 7, dip = 15) {
     color([0.22, 0.48, 0.25]) { // Natural Forest Pine Green
         union() {
-            // Gradual 45-degree underside support cone starting smoothly at trunk (0% flat steps)
-            cone_h = h_tier * 1.35;
-            translate([0, 0, -h_tier * 0.45])
-                cylinder(r1 = 3.2, r2 = r_base * 0.82, h = cone_h, $fn = 24);
+            // Pronounced steep conical underside support cone starting smoothly down on trunk
+            cone_h = h_tier * 1.85;
+            translate([0, 0, -h_tier * 0.90])
+                cylinder(r1 = 3.2, r2 = r_base * 0.90, h = cone_h, $fn = 32);
             
             // Outer drooping bough fans with feathered needle tips
             for (i = [0 : num_fans - 1]) {
