@@ -231,8 +231,14 @@ module whole_tree() {
         }
         if (show_seed_cones) optional_cones();
         if (show_base)
-            color([0.27,0.24,0.19])
-                cylinder(h=1.2,r=5.1,center=false,$fn=32);
+            color([0.27,0.24,0.19]) {
+                union() {
+                    // Thin 0.45mm breakaway wide base disc (32mm diameter) for bed adhesion
+                    cylinder(h=0.45, r=16.0, center=false, $fn=48);
+                    // Flared transition collar for solid trunk anchor
+                    cylinder(h=1.2, r1=6.0, r2=2.8, center=false, $fn=32);
+                }
+            }
     }
 }
 
