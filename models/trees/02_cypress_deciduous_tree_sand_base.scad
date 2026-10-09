@@ -213,22 +213,30 @@ module cypress_trunk() {
 module foliage_cloud_pad(rx = 7, ry = 6, rz = 4.5, bump_count = 7) {
     color([0.18, 0.48, 0.22]) { // Cypress Forest Green
         union() {
-            translate([0, 0, -rz * 0.8])
-                cylinder(r1 = 1.0, r2 = max(rx, ry) * 0.85, h = rz * 0.95);
+            // Gradual 45-degree self-supporting underside transition cone (0% flat overhangs)
+            cone_h = max(rx, ry) * 1.15;
+            translate([0, 0, -cone_h])
+                cylinder(r1 = 1.0, r2 = max(rx, ry), h = cone_h, $fn = 24);
             
-            scale([1.0, ry / rx, rz / rx]) sphere(r = rx, $fn = 20);
+            // Upper dome of foliage cloud
+            scale([1.0, ry / rx, rz / rx]) 
+                intersection() {
+                    sphere(r = rx, $fn = 20);
+                    translate([0, 0, rx * 0.5]) cube([rx * 2.2, ry * 2.2, rx * 2.2], center = true);
+                }
             
+            // Textured leaf clusters on upper canopy
             for (b = [0 : bump_count - 1]) {
                 ang = b * (360 / bump_count);
                 rotate([0, 0, ang])
-                    translate([rx * 0.65, 0, rz * 0.25])
-                        scale([1.2, 0.8, 0.9])
-                            rotate([0, 45, 30])
-                                cube([rx * 0.55, rx * 0.55, rx * 0.55], center = true);
+                    translate([rx * 0.60, 0, rz * 0.20])
+                        scale([1.1, 0.8, 0.9])
+                            rotate([0, 35, 30])
+                                cube([rx * 0.50, rx * 0.50, rx * 0.50], center = true);
             }
             
-            translate([0, 0, rz * 0.45])
-                scale([1.1, 0.9, 0.7]) sphere(r = rx * 0.55, $fn = 16);
+            translate([0, 0, rz * 0.35])
+                scale([1.1, 0.9, 0.7]) sphere(r = rx * 0.50, $fn = 16);
         }
     }
 }
