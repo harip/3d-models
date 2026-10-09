@@ -56,6 +56,9 @@ module pine_tree_3in() {
         // Exposed Trunk & Base Foot
         color([0.38, 0.24, 0.14]) { // Dark Bark Brown
             union() {
+                // Thin 0.45mm breakaway wide base disc (32mm diameter) for bed adhesion
+                cylinder(h = 0.45, r = 16.0, center = false, $fn = 48);
+                
                 // Bed adhesion foot at Z=0
                 cylinder(r1 = trunk_r1, r2 = trunk_r2, h = 4.5);
                 
