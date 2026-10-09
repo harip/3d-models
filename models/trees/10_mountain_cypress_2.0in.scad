@@ -15,6 +15,9 @@ module mountain_cypress(h = 50.80) {
         // Trunk & Bed-Adhesion Base Foot
         color([0.36, 0.24, 0.14]) { // Dark Cedar Bark Brown
             union() {
+                // Thin 0.45mm breakaway wide base disc (32mm diameter) for bed adhesion
+                cylinder(h = 0.45, r = 16.0, center = false, $fn = 48);
+                
                 cylinder(r1 = 6.0, r2 = 2.8, h = 4.0);
                 hull() {
                     translate([0, 0, 3.0]) cylinder(r = 2.8, h = h * 0.20);
