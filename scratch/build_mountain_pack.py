@@ -1,4 +1,11 @@
-// ====================================================================
+import os
+
+# Ensure directories exist
+os.makedirs("models/trees/mountain_pack", exist_ok=True)
+os.makedirs("stls/trees/mountain_pack", exist_ok=True)
+os.makedirs("scratch", exist_ok=True)
+
+mountain_scad_content = """// ====================================================================
 // 3D Printable Mountain Trees Variety Pack (Heights 2.0in to 3.0in)
 // Botanically Realistic Mountain Species:
 // 1. Colorado Blue Spruce (3.00 in / 76.2 mm)
@@ -322,3 +329,9 @@ translate([45, 25, 0])   ponderosa_pine(66.04);   // 2.60 in
 translate([-45, -25, 0]) subalpine_fir(60.96);    // 2.40 in
 translate([0, -25, 0])   alpine_larch(55.88);     // 2.20 in
 translate([45, -25, 0])  mountain_cypress(50.80); // 2.00 in
+"""
+
+with open("models/trees/09_tree_variety_pack_spaced.scad", "w") as f:
+    f.write(mountain_scad_content)
+
+print("Saved models/trees/09_tree_variety_pack_spaced.scad (Mountain Trees Variety Pack)")
