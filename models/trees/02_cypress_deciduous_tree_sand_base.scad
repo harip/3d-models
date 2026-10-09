@@ -153,6 +153,9 @@ module multi_feature_terrain_base(r = base_radius, rings = 36, sectors = 80, min
 module cypress_trunk() {
     color([0.45, 0.28, 0.15]) { // Sienna Wood Brown
         union() {
+            // Thin 0.45mm breakaway wide base disc (32mm diameter) for bed adhesion
+            cylinder(h = 0.45, r = 16.0, center = false, $fn = 48);
+            
             // Smooth wide flared trunk base foot (14mm diameter flat bed interface)
             cylinder(r1 = 7.0, r2 = 3.2, h = 5.0);
             
