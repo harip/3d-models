@@ -26,7 +26,12 @@ Trigger automatically whenever the user asks to create, generate, model, or prin
    3. **Verify Manifold Status**: Check CLI output for:
       - `Top level object is a 3D object (manifold)`
       - `Status: NoError`
-   4. **Report Results**: Provide direct markdown file links to both the `.scad` source and `.stl` output.
+   4. **Render Visual PNG Preview**: Generate image preview with OpenSCAD CLI and copy to artifact directory:
+      ```bash
+      openscad -o scratch/<model_name>_preview.png --imgsize=1080,1080 --colorscheme=Tomorrow models/trees/<model_name>.scad
+      cp scratch/<model_name>_preview.png <artifact_dir>/<model_name>_preview.png
+      ```
+   5. **Report Results & Show Visual Preview**: Embed the generated PNG preview image (`![<model_name> Preview](<artifact_dir>/<model_name>_preview.png)`) directly in the chat response or artifact report, alongside links to `.scad` and `.stl` files.
 
 3. **Tree Modeling Specs (`tree_base_skill` integration)**:
    - **1 Single Watertight STL**: Merge trunk + foliage (+ base) into 1 manifold solid.
