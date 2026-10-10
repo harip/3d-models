@@ -13,7 +13,7 @@ module modular_bridge_print_kit() {
     translate([0, -28.0, 0])
         bottom_center_pillar_part();
 
-    translate([0, 28.0, 2.5])
+    translate([0, 28.0, 4.5])
         top_cable_pylon_tower_part();
 }
 

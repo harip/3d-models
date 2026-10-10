@@ -42,12 +42,21 @@ module bridge_deck_part() {
             }
         }
 
-        // --- TOP SNAP-IN SOCKETS FOR V-PYLON (Y = +/- 9.5 mm) ---
-        // Sockets: 6.0mm in X, 3.4mm in Y, 2.8mm depth
+        // --- TOP SNAP-IN THROUGH-SOCKETS FOR V-PYLON (Y = +/- 9.5 mm) ---
+        // Sockets: 6.0mm in X, 3.4mm in Y, cuts all the way through deck with snap undercut
         for (side_sign = [-1, 1]) {
             y_socket = side_sign * 9.5;
-            translate([-3.0, y_socket - 1.7, deck_thick - 2.8])
-                cube([6.0, 3.4, 2.9]);
+            // Full through-mortise cutting through the entire deck plate
+            translate([-3.0, y_socket - 1.7, -0.5])
+                cube([6.0, 3.4, deck_thick + 1.0]);
+
+            // Underside snap-lock relief cavity with 45° self-supporting slope
+            hull() {
+                translate([-3.3, y_socket - 1.95, -0.5])
+                    cube([6.6, 3.9, 0.6]);
+                translate([-3.0, y_socket - 1.7, 1.2])
+                    cube([6.0, 3.4, 0.1]);
+            }
         }
 
         // --- BOTTOM SNAP-IN SOCKET FOR 3CM PILLAR (X=0, Y=0) ---
@@ -55,17 +64,18 @@ module bridge_deck_part() {
         translate([-6.0, -3.5, -2.2])
             cube([12.0, 7.0, 3.0]);
 
-        // --- 16 THREAD EYELET HOLES (D = 1.8 mm) WITH COUNTERSUNK ENTRY ---
+        // --- 16 THREAD EYELET HOLES (D = 2.6 mm) MATCHING PYLON DIAMETER ---
         deck_holes_x = [-48.0, -36.0, -24.0, -12.0, 12.0, 24.0, 36.0, 48.0];
+        hole_d = 2.60;
         for (hx = deck_holes_x) {
             for (side_sign = [-1, 1]) {
-                y_pos = side_sign * (deck_w/2 - 2.2); // Y = +/- 11.3 mm
-                // Through-hole
+                y_pos = side_sign * (deck_w/2 - 2.8); // Y = +/- 10.7 mm (clear of railing)
+                // Through-hole (D = 2.6 mm)
                 translate([hx, y_pos, -2.5])
-                    cylinder(r = 0.9, h = deck_thick + 5.0, $fn = 16);
+                    cylinder(d = hole_d, h = deck_thick + 5.0, $fn = 20);
                 // Conical entry funnel
-                translate([hx, y_pos, deck_thick - 0.6])
-                    cylinder(r1 = 0.9, r2 = 1.5, h = 1.0, $fn = 16);
+                translate([hx, y_pos, deck_thick - 0.7])
+                    cylinder(r1 = hole_d/2, r2 = hole_d/2 + 0.6, h = 1.0, $fn = 20);
             }
         }
     }
