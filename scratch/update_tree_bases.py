@@ -1,4 +1,14 @@
-// ====================================================================
+import os
+import subprocess
+
+artifact_dir = "/Users/lavanyat/.gemini/antigravity-ide/brain/b6d63059-fcc2-4f58-9ee9-2a7dadcb769f"
+
+# 1. Update 08_pine_tree_3.0in.scad with wide & thick base disc (44mm diameter x 1.8mm thick)
+scad_08 = "models/trees/08_pine_tree_3.0in.scad"
+stl_08 = "stls/trees/08_pine_tree_3.0in.stl"
+png_08 = "scratch/08_pine_tree_3.0in_preview.png"
+
+pine_08_content = """// ====================================================================
 // 3D Printable Pine Tree (Wide Heavy Bed Anchor Disc)
 // Height: 3.0 inches (76.2 mm)
 // Base Upgrade: 44.0mm diameter x 1.8mm thick heavy adhesion pad
@@ -133,3 +143,67 @@ module pine_tree_3in() {
 }
 
 pine_tree_3in();
+"""
+
+with open(scad_08, "w") as f:
+    f.write(pine_08_content)
+print(f"Updated {scad_08}")
+
+print("Rendering 08 Pine Tree STL...")
+res_08 = subprocess.run(["openscad", "-o", stl_08, scad_08], capture_output=True, text=True)
+print(f"08 STL Exit Code: {res_08.returncode}")
+print(f"OpenSCAD Output:\n{res_08.stderr.strip()}")
+
+print("Rendering 08 PNG...")
+subprocess.run(["openscad", "-o", png_08, "--imgsize=1600,1200", "--colorscheme=Tomorrow", scad_08], capture_output=True, text=True)
+if os.path.exists(png_08):
+    subprocess.run(["cp", png_08, f"{artifact_dir}/08_pine_tree_3.0in_preview.png"])
+
+# 2. Also Update 03_bristlecone_pine_3.6in.scad with wide & thick base disc
+scad_03 = "models/trees/accurate_mountain_pack/03_bristlecone_pine_3.6in.scad"
+stl_03 = "stls/trees/03_bristlecone_pine_3.6in.stl"
+stl_03_pack = "stls/trees/accurate_mountain_pack/03_bristlecone_pine_3.6in.stl"
+png_03 = "scratch/03_bristlecone_pine_3.6in_preview.png"
+
+with open(scad_03, "r") as f:
+    scad_03_text = f.read()
+
+# Check if bristlecone has wide base disc, if not, add it
+if "base_disc_r" not in scad_03_text:
+    # Read the file and inject base disc
+    replacement = """module bristlecone_pine_3_6in(h = 91.44) {
+    base_disc_r = 22.0; // 44mm diameter wide anchor
+    base_disc_h = 1.8;  // 1.8mm thick sturdy base
+    union() {
+        // --- 0. HEAVY BED ADHESION DISC ---
+        color([0.46, 0.28, 0.17])
+            cylinder(h = base_disc_h, r1 = base_disc_r, r2 = base_disc_r - 0.6, center = false, $fn = 64);
+        
+        translate([0, 0, base_disc_h]) {
+        // --- 1. WEATHERED GNARLED TRUNK & MULTI-BRANCH SYSTEM ---"""
+    
+    scad_03_text = scad_03_text.replace("module bristlecone_pine_3_6in(h = 91.44) {\n    union() {\n        // --- 1. WEATHERED GNARLED TRUNK & MULTI-BRANCH SYSTEM ---", replacement)
+    # Add closing brace for translate
+    # The last line before the end
+    scad_03_text = scad_03_text.rstrip()
+    if scad_03_text.endswith("bristlecone_pine_3_6in();"):
+        # find the last closing brace before the invocation
+        idx = scad_03_text.rfind("}")
+        scad_03_text = scad_03_text[:idx] + "}\n    }\n}\n\nbristlecone_pine_3_6in();\n"
+    
+    with open(scad_03, "w") as f:
+        f.write(scad_03_text)
+    print(f"Updated {scad_03}")
+
+    print("Rendering 03 Bristlecone STL...")
+    res_03 = subprocess.run(["openscad", "-o", stl_03, scad_03], capture_output=True, text=True)
+    subprocess.run(["cp", stl_03, stl_03_pack])
+    print(f"03 STL Exit Code: {res_03.returncode}")
+    print(f"OpenSCAD Output:\n{res_03.stderr.strip()}")
+
+    print("Rendering 03 PNG...")
+    subprocess.run(["openscad", "-o", png_03, "--imgsize=1600,1200", "--colorscheme=Tomorrow", scad_03], capture_output=True, text=True)
+    if os.path.exists(png_03):
+        subprocess.run(["cp", png_03, f"{artifact_dir}/03_bristlecone_pine_3.6in_preview.png"])
+
+print("WIDE & THICK BASES COMPLETE!")

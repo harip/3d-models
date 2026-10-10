@@ -5,7 +5,14 @@
 $fn = 28;
 
 module bristlecone_pine_3_6in(h = 91.44) {
+    base_disc_r = 22.0; // 44mm diameter wide anchor
+    base_disc_h = 1.8;  // 1.8mm thick sturdy base
     union() {
+        // --- 0. HEAVY BED ADHESION DISC ---
+        color([0.46, 0.28, 0.17])
+            cylinder(h = base_disc_h, r1 = base_disc_r, r2 = base_disc_r - 0.6, center = false, $fn = 64);
+        
+        translate([0, 0, base_disc_h]) {
         // --- 1. WEATHERED GNARLED TRUNK & MULTI-BRANCH SYSTEM ---
         color([0.46, 0.28, 0.17]) {
             // Flared Base & Root Buttresses
@@ -97,6 +104,7 @@ module bristlecone_pine_3_6in(h = 91.44) {
             // Tuft 6 (Upper Right Crown)
             translate([11.0, -6.0, h * 0.78])
                 supportless_foxtail_tuft(r = 10.5, length = 13.5);
+        }
         }
     }
 }
