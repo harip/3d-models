@@ -22,22 +22,23 @@ module bridge_deck_part() {
             translate([-bridge_l/2, -deck_w/2, 0])
                 cube([bridge_l, deck_w, deck_thick]);
 
-            // Outer Safety Railings (Y = +/- 12.8mm)
-            for (side_y = [-deck_w/2 + 0.4, deck_w/2 - 1.4]) {
-                translate([-bridge_l/2, side_y, deck_thick])
-                    cube([bridge_l, 1.0, 3.2]);
+            // Outer Safety Railings (100% Flush to outer deck edges Y = +/- 13.5mm)
+            for (side_sign = [-1, 1]) {
+                y_rail = (side_sign == -1) ? -deck_w/2 : (deck_w/2 - 1.2);
+                translate([-bridge_l/2, y_rail, deck_thick])
+                    cube([bridge_l, 1.2, 3.2]);
 
                 for (x = [-bridge_l/2 + 5.0 : 10.0 : bridge_l/2 - 5.0]) {
-                    translate([x, side_y - 0.1, 0])
+                    translate([x, y_rail, 0])
                         cube([1.2, 1.2, deck_thick + 3.2]);
                 }
             }
 
-            // Mountain Shelf Landing Shoes on cliff ends
+            // Mountain Shelf Landing Shoes on cliff ends (Flush with deck width)
             for (s = [-1, 1]) {
                 x_end = s * (bridge_l/2 - 5.0);
-                translate([x_end - 4.5, -deck_w/2 - 1.0, -2.0])
-                    cube([9.0, deck_w + 2.0, 2.0]);
+                translate([x_end - 4.5, -deck_w/2, -2.0])
+                    cube([9.0, deck_w, 2.0]);
             }
         }
 
