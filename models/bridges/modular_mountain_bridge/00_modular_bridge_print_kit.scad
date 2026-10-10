@@ -1,5 +1,5 @@
 // ====================================================================
-// Modular Snap-In Mountain Bridge - 3-IN-1 PRINT KIT
+// Modular Snap-In Mountain Bridge - 3-IN-1 PRINT KIT (50% WIDER DECK)
 // ====================================================================
 
 use <01_bridge_deck.scad>
@@ -10,10 +10,10 @@ module modular_bridge_print_kit() {
     translate([0, 0, 0])
         bridge_deck_part();
 
-    translate([0, -24.0, 0])
+    translate([0, -28.0, 0])
         bottom_center_pillar_part();
 
-    translate([0, 24.0, 2.2])
+    translate([0, 28.0, 2.5])
         top_cable_pylon_tower_part();
 }
 

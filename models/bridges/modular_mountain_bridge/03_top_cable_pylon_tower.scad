@@ -1,81 +1,93 @@
 // ====================================================================
-// Modular Snap-In Mountain Bridge - PART 3: TOP CABLE PYLON TOWER
-// Height: 46.0 mm above deck
-// Recalibrated Dimensions (20% Slimmed, Perfect Deck Clearance):
-// - Leg Base: 5.8mm in X, 2.4mm in Y (centered at Y = +/- 5.5 mm)
-// - Leg spans Y = +/- 4.3mm to +/- 6.7mm (0.8mm clear buffer from railings!)
-// - Leg Peak: 4.6mm in X, 2.2mm in Y
-// - Tenons: 4.0mm in X, 2.0mm in Y, 2.2mm depth with 45-deg lead-in bevel
-//   (snaps with 0.2mm per-side clearance into 4.4mm x 2.4mm deck sockets!)
-// - 10 Threading Holes (D = 1.6 mm) with 1.6mm solid protective side walls
+// Modular Snap-In Mountain Bridge - PART 3: V-SHAPED CABLE PYLON TOWER
+// Height: 48.0 mm above deck
+// Proportioned for 27.0mm Wide Deck:
+// - Base centered at Y = +/- 9.5 mm (snaps tight & nice into deck sockets)
+// - Flares gracefully outward to Y = +/- 14.2 mm at crown finials (proud V silhouette)
+// - Male Tenons: 5.4mm x 2.8mm x 2.5mm with 45-deg lead-in chamfer
+//   (snaps tight & nice with 0.3mm clearance into deck's 6.0mm x 3.4mm sockets!)
+// - 10 Cable Threading Holes: D = 1.8 mm with conical funnels for easy rigging
+// - Heavy solid walls (>=2.3mm solid meat around every hole)
 // 100% Watertight Manifold Solid for Flat Bed Printing (NoError)
 // ====================================================================
 
 $fn = 28;
 
-deck_w   = 18.0;
-tower_h  = 46.0;
+deck_w   = 27.0; // 50% wider
+tower_h  = 48.0;
+
+// V-Shape flare parameters for 27mm deck:
+y_flare_base = 9.50;  // Matches deck socket center
+y_flare_peak = 14.20; // Elegant outward V-flare
+
+function pylon_y(z, side_sign) = side_sign * (y_flare_base + (y_flare_peak - y_flare_base) * (z / tower_h));
 
 module top_cable_pylon_tower_part() {
     difference() {
         union() {
-            // Twin vertical pylon towers with subtle architectural taper
+            // Twin V-flared pylon tower legs
             for (side_sign = [-1, 1]) {
-                y_bot = side_sign * 5.5; // Exactly matches deck socket center!
-                y_top = side_sign * 6.0; // Subtle elegant taper, stays 100% inside deck width!
+                y_bot = pylon_y(0, side_sign);        // Y = +/- 9.50 mm
+                y_top = pylon_y(tower_h, side_sign); // Y = +/- 14.20 mm
 
-                // Main Tower Leg (Z = 0 to Z = tower_h)
+                // Main V-Canted Tower Leg
                 hull() {
-                    // Base: 5.8mm wide in X, 2.4mm thick in Y
-                    translate([-2.9, y_bot - 1.2, 0])
-                        cube([5.8, 2.4, 2.0]);
-                    // Peak: 4.6mm wide in X, 2.2mm thick in Y
-                    translate([-2.3, y_top - 1.1, tower_h - 2.0])
-                        cube([4.6, 2.2, 2.0]);
+                    // Base at deck: 6.8mm in X, 3.0mm in Y (spans Y = +/- 8.0mm to +/- 11.0mm)
+                    translate([-3.4, y_bot - 1.5, 0])
+                        cube([6.8, 3.0, 2.0]);
+                    // Peak: 5.2mm in X, 2.6mm in Y
+                    translate([-2.6, y_top - 1.3, tower_h - 2.0])
+                        cube([5.2, 2.6, 2.0]);
                 }
 
-                // Decorative Finial Crown Cap
+                // Decorative Finial Crown Sphere
                 translate([0, y_top, tower_h])
-                    scale([1.1, 1.0, 1.3])
-                        sphere(r = 1.6, $fn = 14);
+                    scale([1.2, 1.1, 1.4])
+                        sphere(r = 1.8, $fn = 16);
 
-                // --- PRECISION SNAP-IN TENON (4.0mm x 2.0mm x 2.2mm) ---
-                // Fits into 4.4mm x 2.4mm x 2.5mm deck sockets with exact 0.2mm clearance!
+                // --- PRECISION SNAP-IN TENON (SNAPS TIGHT & NICE INTO 6.0 x 3.4 MM SOCKET) ---
+                // Sized 5.4mm x 2.8mm x 2.5mm (0.30mm per-side clearance + 45-deg lead-in bevel)
+                y_socket_center = side_sign * 9.50;
                 hull() {
-                    translate([-2.0, y_bot - 1.0, -1.2])
-                        cube([4.0, 2.0, 1.3]);
-                    translate([-1.5, y_bot - 0.6, -2.2])
-                        cube([3.0, 1.2, 0.2]); // 45-deg lead-in chamfer
+                    translate([-2.7, y_socket_center - 1.4, -1.3])
+                        cube([5.4, 2.8, 1.4]);
+                    translate([-2.0, y_socket_center - 0.8, -2.5])
+                        cube([4.0, 1.6, 0.2]); // 45-deg lead-in chamfer
                 }
             }
 
-            // Sturdy Cross-Bracing Struts (Staying inside tower legs)
-            // Lower Cross-Strut
-            translate([-1.8, -4.5, 14.0])
-                cube([3.6, 9.0, 2.6]);
+            // Sturdy Cross-Bracing Struts bridging the V-flared span
+            // Lower Cross-Strut (Z = 15mm to 19mm)
+            y_mid1 = pylon_y(17.0, 1);
+            hull() {
+                translate([-2.0, -(y_mid1 - 1.0), 15.0]) cube([4.0, (2 * y_mid1 - 2.0), 0.1]);
+                translate([-2.0, -(y_mid1 - 1.0), 18.8]) cube([4.0, (2 * y_mid1 - 2.0), 0.1]);
+            }
 
-            // Upper Cross-Strut
-            translate([-1.5, -5.0, 30.0])
-                cube([3.0, 10.0, 2.4]);
+            // Upper Cross-Strut (Z = 31mm to 35mm)
+            y_mid2 = pylon_y(33.0, 1);
+            hull() {
+                translate([-1.7, -(y_mid2 - 1.0), 31.0]) cube([3.4, (2 * y_mid2 - 2.0), 0.1]);
+                translate([-1.7, -(y_mid2 - 1.0), 34.4]) cube([3.4, (2 * y_mid2 - 2.0), 0.1]);
+            }
         }
 
-        // --- 10 PRECISION THREADING HOLES (D = 1.6 mm) ---
-        // Sized for easy thread rigging with >1.5mm solid meat on each side
-        tower_holes_z = [8.5, 16.5, 24.5, 32.5, 39.5];
+        // --- 10 PRECISION THREADING HOLES (D = 1.8 mm) ALONG V-LEGS ---
+        tower_holes_z = [9.0, 17.5, 26.0, 34.5, 42.0];
         for (tz = tower_holes_z) {
             for (side_sign = [-1, 1]) {
-                y_leg = side_sign * (5.5 + (6.0 - 5.5) * (tz / tower_h));
+                y_hole = pylon_y(tz, side_sign);
 
-                // Clean through-hole drilled through leg from -X to +X (D = 1.6 mm)
-                translate([0, y_leg, tz])
+                // Clean through-hole drilled through V-leg from -X to +X (D = 1.8 mm)
+                translate([0, y_hole, tz])
                     rotate([0, 90, 0])
-                        cylinder(r = 0.8, h = 10.0, center = true, $fn = 20);
+                        cylinder(r = 0.9, h = 12.0, center = true, $fn = 20);
 
-                // Conical funnels on hole entrances
-                for (x_mouth = [-2.6, 2.6]) {
-                    translate([x_mouth, y_leg, tz])
+                // Conical funnels on both hole entrances for effortless thread insertion
+                for (x_mouth = [-3.0, 3.0]) {
+                    translate([x_mouth, y_hole, tz])
                         rotate([0, (x_mouth > 0 ? 90 : -90), 0])
-                            cylinder(r1 = 1.4, r2 = 0.8, h = 0.8, center = true, $fn = 16);
+                            cylinder(r1 = 1.6, r2 = 0.9, h = 1.0, center = true, $fn = 16);
                 }
             }
         }

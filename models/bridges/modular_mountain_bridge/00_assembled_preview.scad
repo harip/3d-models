@@ -1,5 +1,5 @@
 // ====================================================================
-// Modular Mountain Bridge - ASSEMBLED PREVIEW (CALIBRATED ACCURACY)
+// Modular Mountain Bridge - ASSEMBLED PREVIEW (50% WIDER DECK + V-PYLON)
 // ====================================================================
 
 use <01_bridge_deck.scad>
@@ -15,7 +15,7 @@ module assembled_bridge() {
             bottom_center_pillar_part();
 
     color([0.88, 0.90, 0.92])
-        translate([0, 0, 3.6])
+        translate([0, 0, 3.8])
             top_cable_pylon_tower_part();
 }
 
